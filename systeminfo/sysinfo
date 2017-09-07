@@ -1,0 +1,18 @@
+#!/bin/bash
+
+
+
+# Purpose - Get info about your operating system
+function os_info(){
+	echo "OS type : $(uname)"
+	echo "$(cat /etc/*-release | grep -e DISTRIB_DESCRIPTION)"
+	echo "Kernel Version: $(uname -r)"
+	echo "Kernel Build Information: $(cat /proc/version)"
+	echo "Kernel GCC Version: $(gcc --version)"
+	echo "Kernel build time: $(uname -v)"
+	echo "System Architecture Information: $(lscpu | grep -v Flags)"
+	
+}
+
+os_info
+
