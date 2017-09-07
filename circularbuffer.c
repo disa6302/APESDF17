@@ -170,6 +170,12 @@ void main()
 				break;
 			case 5: exit(0);
 		}
+		if(ch == 4)
+		{
+			printf("Enter the size of buffer to be allocated:");
+			scanf("%u",&buffersize);
+			status = allocate(&buffer,buffersize);
+		}	
 		
 		printf("Enter your choice(0-5)\n0.Add\n1.Remove\n2.Dump\n3.Get size of list\n4.Delete buffer\n5.Exit\n");
 		scanf("%u",&ch);
