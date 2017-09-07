@@ -59,7 +59,7 @@ enum Errorcode add_node(struct Node** head,uint32_t val,uint32_t pos)
 		value = size();
 		return ADD_SUCCESS;	
 	}
-	while(pos!=0)
+	while(pos!=1)
 	{
 		temp = temp->next;
 		pos--;
