@@ -127,7 +127,7 @@ enum Errorcode remove_node(struct Node** head,uint32_t pos)
     struct Node* temp = *head;
     struct Node* storeNext;
     struct Node* storePrev;
-    if(pos == 0)
+    if(!(pos))
     {
 	*head = (*head)->next;
 	(*head)->prev = NULL;
