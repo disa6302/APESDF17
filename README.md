@@ -9,4 +9,4 @@ include     : Contains the header files for double Linked List and Circular Buff
 
 Execution:
 
-Clone the repository to your local machine, run make to get dlinkedlist and cbuffer executables
+Clone the repository to your local machine and run make to get dlinkedlist and cbuffer executables
