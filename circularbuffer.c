@@ -38,42 +38,58 @@ enum Status allocate(struct circularBuffer** cb,uint32_t size)
 enum bufferstatus add_item(struct circularBuffer** cb,uint32_t item)
 {
     buffstatusadd = ls_buff_full(cb);	
-    uint8_t flag;
     if(buffstatusadd==1)
     {
         flag = 1;
 	(*cb)->num_elements=0;
-	(*cb)->head=(*cb)->base;		
+	(*cb)->head=(*cb)->base;
+	flag++;		
     }
-	*(*cb)->head=item;
-	(*cb)->head++;
-	operation = ADD;
-	count = size();
-	if(flag == 1)
-	{
-            return BUFFER_FULL;
-	}		
+    *(*cb)->head=item;
+    (*cb)->head++;
+    operation = ADD;
+    count = size();
+    if(flag >= 1)
+    {
+        return BUFFER_FULL;
+    }
+    return 1;		
 }
 
 void print(struct circularBuffer** cb)
 {
+    printf("Size:%u\n",(*cb)->size);
     uint32_t* temp_tail;
-    //temp_head = (*cb)->head;
+    uint32_t* temp_base;
+    uint32_t s = (*cb)->size;
+    temp_base = (*cb)->base;
     temp_tail = (*cb)->tail;
-    if(temp_tail <= (*cb)->head)
+    if(temp_tail <= (*cb)->head && flag<1)
     {
-	while(temp_tail!=(*cb)->head)	
+	while((temp_tail!=(*cb)->head))	
 	{
 	    printf("%u->",*temp_tail);
 	    temp_tail++;
 	}
     }
+    if(flag >= 1)
+    {
+        while(s)
+	{
+	    printf("%u->",*temp_base);
+	    temp_base++;
+	    s--;
+	}
+	temp_base = (*cb)->base;
+    }
+	
     printf("\n");	
 }
 
 
 uint32_t size()
 {
+    
     if(operation==DELETE)
     {
 	buffer->num_elements--;
@@ -125,6 +141,7 @@ enum bufferstatus remove_item(struct circularBuffer** cb)
     (*cb)->tail++;
     operation = DELETE;
     count = size();
+    return 0;
 }
 
 enum Status destroy()

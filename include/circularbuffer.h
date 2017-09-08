@@ -18,6 +18,7 @@ struct circularBuffer
 
 struct circularBuffer* buffer; 
 uint32_t count=0;
+uint32_t flag;
 uint32_t buffstatusadd = 0;
 uint32_t buffstatusdelete = 0;
 
