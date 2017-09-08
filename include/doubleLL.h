@@ -36,7 +36,7 @@ struct Node {
     	struct Node* prev;
 };
 
-struct Node* head;
+struct Node* head=NULL;
 uint32_t count = 1;
 uint32_t value;
 uint32_t flag=0;
