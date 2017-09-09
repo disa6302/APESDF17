@@ -17,6 +17,18 @@
 #include <stdlib.h>
 #include "circularbuffer.h"
 
+/*count              : Indicates current number of items in the buffer*/
+uint32_t count=0;
+
+/*flag               : Return a buffer full status if set to 1*/
+uint32_t flag = 0;
+
+/*bufferstatusadd    : Stores the status returned by ls_buffer_full function*/
+uint32_t buffstatusadd = 0;
+
+/*bufferstatusdelete : Stores the status returned by ls_buffer_empty function*/
+uint32_t buffstatusdelete = 0;
+
 
 enum Status allocate(struct circularBuffer** cb,uint32_t size)
 {
@@ -35,21 +47,25 @@ enum Status allocate(struct circularBuffer** cb,uint32_t size)
 }
 
 
+
 enum bufferstatus add_item(struct circularBuffer** cb,uint32_t item)
 {
     buffstatusadd = ls_buff_full(cb);	
     if(buffstatusadd==1)
     {
+	/*flag: Set when buffer is full-impacts the way buffer is dumped*/
         flag = 1;
-	(*cb)->num_elements=0;
-	(*cb)->head=(*cb)->base;
-	flag++;		
+	(*cb)->num_elements=(*cb)->size;
+	(*cb)->head=(*cb)->base;		
     }
     *(*cb)->head=item;
+     printf("Head in add:%u\n",*(*cb)->head);
     (*cb)->head++;
-    operation = ADD;
-    count = size();
-    if(flag >= 1)
+   
+    if((*cb)->num_elements!=(*cb)->size)
+    {operation = ADD;
+    count = size(cb);}
+    if(flag == 1)
     {
         return BUFFER_FULL;
     }
@@ -58,13 +74,21 @@ enum bufferstatus add_item(struct circularBuffer** cb,uint32_t item)
 
 void print(struct circularBuffer** cb)
 {
-    printf("Size:%u\n",(*cb)->size);
+    /*Keep a copy of Tail, Base and Head pointer*/
     uint32_t* temp_tail;
     uint32_t* temp_base;
-    uint32_t s = (*cb)->size;
+    uint32_t* temp_head;
     temp_base = (*cb)->base;
     temp_tail = (*cb)->tail;
-    if(temp_tail <= (*cb)->head && flag<1)
+    temp_head = (*cb)->head;
+
+    /*Reset head to start of buffer if head points to beyond buffer*/
+    if(temp_head > temp_base+(*cb)->size)
+    {
+	temp_head = temp_base;
+    } 
+
+    if(temp_tail <= (*cb)->head)
     {
 	while((temp_tail!=(*cb)->head))	
 	{
@@ -72,36 +96,34 @@ void print(struct circularBuffer** cb)
 	    temp_tail++;
 	}
     }
-    if(flag >= 1)
+    if(flag == 1)
     {
-        while(s)
+
+	while(temp_tail <= temp_base+(*cb)->size-1)
 	{
-	    printf("%u->",*temp_base);
-	    temp_base++;
-	    s--;
+	    printf("%u->",*temp_tail);
+	    temp_tail++;
 	}
-	temp_base = (*cb)->base;
     }
-	
     printf("\n");	
 }
 
 
-uint32_t size()
+uint32_t size(struct circularBuffer** cb)
 {
     
     if(operation==DELETE)
     {
-	buffer->num_elements--;
-	return buffer->num_elements;
+	(*cb)->num_elements--;
     }
     if(operation==ADD)
     {
-	buffer->num_elements++;
-	return buffer->num_elements;
+	(*cb)->num_elements++;
     }
-    if(operation == DISPLAY)
-    return buffer->num_elements;
+    if(operation == DISPLAY) 
+    {
+    }
+    return (*cb)->num_elements;
 }
 
 uint32_t ls_buff_empty(struct circularBuffer** cb)
@@ -109,7 +131,6 @@ uint32_t ls_buff_empty(struct circularBuffer** cb)
     printf("Number of elements:%hhu\n",(*cb)->num_elements);
     if((*cb)->num_elements==0)
     {
-	printf("entered..\n");
 	return 1;
     }
     else return 0;
@@ -118,7 +139,7 @@ uint32_t ls_buff_empty(struct circularBuffer** cb)
 
 uint32_t ls_buff_full(struct circularBuffer** cb)
 {
-    if((*cb)->num_elements == (*cb)->size)
+    if((*cb)->head >= ((*cb)->base+(*cb)->size))
     {
 	return 1;
     }
@@ -129,8 +150,7 @@ uint32_t ls_buff_full(struct circularBuffer** cb)
 
 enum bufferstatus remove_item(struct circularBuffer** cb)
 {
-    buffstatusdelete = ls_buff_empty(cb);
-    printf("Buffer Empty:%hhu",buffstatusdelete);		
+    buffstatusdelete = ls_buff_empty(cb);		
     if(buffstatusdelete==1)
     {
 	return BUFFER_EMPTY;
@@ -140,19 +160,20 @@ enum bufferstatus remove_item(struct circularBuffer** cb)
     printf("\nDeleted item:%d\n",item);
     (*cb)->tail++;
     operation = DELETE;
-    count = size();
+    count = size(cb);
+
     return 0;
 }
 
-enum Status destroy()
+enum Status destroy(struct circularBuffer** cb)
 {
-    free(buffer);
+    free(*cb);
     return DESTROY_SUCCESS;
 }
 
 void main()
 {
-
+    struct circularBuffer* buffer = NULL;
     uint32_t item,buffersize,ch;
     printf("Enter the size of buffer to be allocated:");
     scanf("%u",&buffersize);
@@ -187,10 +208,10 @@ void main()
 	   	    break;
 
 	    case 3: operation = DISPLAY;
-	  	    count=size();
-		    printf("Number of items:%u",count);				
+	  	    count=size(&buffer);
+		    printf("Number of items:%u\n",count);				
 		    break;
-	    case 4: status=destroy();
+	    case 4: status=destroy(&buffer);
 	  	    if(status == DESTROY_SUCCESS) printf("Succesfully destroyed\n");
 		    break;
 	

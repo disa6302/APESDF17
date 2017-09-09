@@ -1,4 +1,26 @@
 
+/**********************************************************************************************
+​ * ​ ​ Copyright​ ​ (C)​ ​ 2017​ ​ by​ ​ Divya Sampath Kumar
+​ *
+​ * ​ ​ Redistribution,​ ​ modification​ ​ or​ ​ use​ ​ of​ ​ this​ ​ software​ ​ in​ ​ source​ ​ or​ ​ binary
+​ * ​ ​ forms​ ​ is​ ​ permitted​ ​ as​ ​ long​ ​ as​ ​ the​ ​ files​ ​ maintain​ ​ this​ ​ copyright.​ ​ Users​ ​ are
+​ * ​ ​ permitted​ ​ to​ ​ modify​ ​ this​ ​ and​ ​ use​ ​ it​ ​ to​ ​ learn​ ​ about​ ​ the​ ​ field​ ​ of​ ​ embedded
+​ * ​ ​ software.​ ​ Alex​ ​ Fosdick​ ​ and​ ​ the​ ​ University​ ​ of​ ​ Colorado​ ​ are​ ​ not​ ​ liable​ ​ for
+​ * ​ ​ any​ ​ misuse​ ​ of​ ​ this​ ​ material.
+​ *
+***********************************************************************************************/
+/**
+​ * ​ ​ @file​ ​ doubleLL.h
+​ * ​ ​ @brief​ ​ An​ ​ abstraction​ ​ for​ ​Double LL Operation
+​ *
+​ * ​ ​ This​ ​ header​ ​ file​ ​ provides​ ​ an​ ​ abstraction​ ​ of​ ​a double Linked
+​ *   List implementation
+ *
+​ * ​ ​ @author​ ​  Divya Sampath Kumar
+​ * ​ ​ @date​ ​    September 8,2017
+​ *
+​ */
+
 #ifndef __DOUBLELL_H_INCLUDED
 #define __DOUBLELL_H_INCLUDED
 
@@ -30,16 +52,26 @@ enum Errorcode  {ADD_SUCCESS,INDEX_OUT_OF_BOUND,DELETE_SUCCESS,LL_EMPTY,DESTROY_
 enum Operation  {ADD,DELETE} Operation;
  
 
+/**
+​ * ​ ​ @brief​ : Structure for LL Node
+​ *
+​ * ​ ​ Defines structure of a node-every Double LL node has data, pointe to previous and next nodes
+​ * ​ ​
+​ *
+​ * ​ ​ @param​ ​ data  ​ Data at node
+​ * ​ ​ @param​ ​ next ​  Address of next Linked List node
+​ * ​ ​ @param​ ​ prev ​  Address of previous Linked List node
+​ *
+​ */
+
 struct Node {
         uint32_t data;
         struct Node* next;
     	struct Node* prev;
 };
 
-struct Node* head=NULL;
-uint32_t count = 1;
-uint32_t value;
-uint32_t flag=0;
+
+
 
 /**
 ​ * ​ ​ @brief​ : Adds a node to the linked list
@@ -109,7 +141,7 @@ struct Node* getNewNode(uint32_t data);
 ​ *
 ​ * ​ ​ @return​ ​ pointer to position.
 ​ */
-uint32_t * search(struct Node** head,uint32_t searchVal);
+void search(struct Node** head,uint32_t searchVal,uint32_t* position);
 
 /**
 ​ * ​ ​ @brief​ : Returns size of LinkedList
@@ -120,5 +152,4 @@ uint32_t * search(struct Node** head,uint32_t searchVal);
 ​ */
 uint32_t size();
 
-//__DOUBLELL_H_INCLUDED
 #endif​ 

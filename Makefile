@@ -1,3 +1,13 @@
+
+
+# FileName        : 	Makefile
+# Description     :	Generates executables in ~/APESDF17. Takes .h files from ~/APESDF17/include 
+#                       path
+# File Author Name:	Divya Sampath Kumar
+# Reference	  :	http://ecee.colorado.edu/~ecen5623/ecen/ex/Linux/example-1/Makefile 
+
+
+
 INCLUDE_DIRS = -Iinclude
 CC=gcc
 

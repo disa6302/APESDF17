@@ -1,10 +1,46 @@
 
+/**********************************************************************************************
+​ * ​ ​ Copyright​ ​ (C)​ ​ 2017​ ​ by​ ​ Divya Sampath Kumar
+​ *
+​ * ​ ​ Redistribution,​ ​ modification​ ​ or​ ​ use​ ​ of​ ​ this​ ​ software​ ​ in​ ​ source​ ​ or​ ​ binary
+​ * ​ ​ forms​ ​ is​ ​ permitted​ ​ as​ ​ long​ ​ as​ ​ the​ ​ files​ ​ maintain​ ​ this​ ​ copyright.​ ​ Users​ ​ are
+​ * ​ ​ permitted​ ​ to​ ​ modify​ ​ this​ ​ and​ ​ use​ ​ it​ ​ to​ ​ learn​ ​ about​ ​ the​ ​ field​ ​ of​ ​ embedded
+​ * ​ ​ software.​ ​ Alex​ ​ Fosdick​ ​ and​ ​ the​ ​ University​ ​ of​ ​ Colorado​ ​ are​ ​ not​ ​ liable​ ​ for
+​ * ​ ​ any​ ​ misuse​ ​ of​ ​ this​ ​ material.
+​ *
+***********************************************************************************************/
+/**
+​ * ​ ​ @file​ ​ doubleLL.h
+​ * ​ ​ @brief​ ​ An​ ​ abstraction​ ​ for​ Circular Buffer Operation
+​ *
+​ * ​ ​ This​ ​ header​ ​ file​ ​ provides​ ​ an​ ​ abstraction​ ​ of​ ​a Circular Buffer
+ *   implementation
+ *
+​ * ​ ​ @author​ ​  Divya Sampath Kumar
+​ * ​ ​ @date​ ​    September 8,2017
+​ *
+​ */
 #ifndef __CIRCULARBUFFER_H_INCLUDED
 #define __CIRCULARBUFFER_H_INCLUDED
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+
+/**
+​ * ​ ​ @brief​ : Structure for Circular buffer
+​ *
+​ * ​ ​ Defines structure of a circular buffer-every buffer will have a 
+ *   head, tail and base pointer. Base pointer is constant, head is  ​ ​ 
+​ *   incremented on adding an element and tai on removing an element
+ *
+​ * ​ ​ @param​ ​ head  ​         Head pointer
+​ * ​ ​ @param​ ​ tail           Tail Pointer
+​ * ​ ​ @param​ ​ base ​          Base Pointer
+​ *   @param​ ​ size ​          Max size of buffer
+ *   @param​ ​ num_elements ​  Number of elements in buffer
+ *
+​ */
 
 struct circularBuffer
 {
@@ -16,11 +52,7 @@ struct circularBuffer
 };
 
 
-struct circularBuffer* buffer; 
-uint32_t count=0;
-uint32_t flag;
-uint32_t buffstatusadd = 0;
-uint32_t buffstatusdelete = 0;
+
 
 /*
 ​ * ​ ​ @brief​ : Enum for Memory allocation and deallocation status
@@ -111,7 +143,7 @@ void print(struct circularBuffer** cb);
 ​ *
 ​ * ​ ​ @return​ ​ None
 ​ */
-enum Status destroy(void);
+enum Status destroy(struct circularBuffer** cb);
 
 /**
 ​ * ​ ​ @brief​ : Check if buffer is full
@@ -137,9 +169,10 @@ uint32_t ls_buff_empty(struct circularBuffer** cb);
 ​ * ​ ​ @brief​ : Returns size of LinkedList
 ​ *
 ​ * ​ ​ Returns size of Linked List
-​ *
+​ *   
+ *   ​@param​ ​ cb  ​   A double pointer to the circular buffer structure
 ​ * ​ ​ @return​ ​ uint32_t
 ​ */
-uint32_t size(void);
+uint32_t size(struct circularBuffer** cb);
 
-#endif​ 
+#endif​ //__CIRCULARBUFFER_H_INCLUDED

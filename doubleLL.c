@@ -18,7 +18,16 @@
 #include <stdint.h>
 #include "doubleLL.h"
 
+struct Node* head=NULL;
 
+/*count	:	Keeps track of number of nodes*/
+uint32_t count = 1;
+
+/*value	:	Temporary variable to keep track of number of nodes*/
+uint32_t value;
+
+/*flag	:	Set when there is no LL available for performing operations on*/
+uint32_t flag=0;
 
 struct Node* getNewNode(uint32_t data)
 {
@@ -168,8 +177,9 @@ enum Errorcode remove_node(struct Node** head,uint32_t pos)
 
 
 
-uint32_t * search(struct Node** head,uint32_t searchVal)
+void search(struct Node** head,uint32_t searchVal,uint32_t* position)
 {	
+
     struct Node* searching = *head;
     uint32_t *pos = malloc(sizeof(pos));
     *pos = 1;
@@ -179,12 +189,12 @@ uint32_t * search(struct Node** head,uint32_t searchVal)
     {
 	if(searching->data == searchVal)
 	{
-            return pos;
+            *position = *pos;
 	}
 	searching = searching->next;
 	(*pos)++;
     }
-    return zero;
+
 }
 
 enum Errorcode destroy(struct Node** head)
@@ -210,6 +220,8 @@ enum Errorcode destroy(struct Node** head)
 void main()
 {
     uint32_t *searchIndex;
+    uint32_t temp_index;
+    searchIndex=&temp_index;
     uint32_t position;
     uint32_t nodeVal;
     uint32_t searchVal;
@@ -263,7 +275,7 @@ void main()
 
 		    case 3: printf("\nEnter data to be searched for:");
 			    scanf("%u",&searchVal);
-			    searchIndex = search(&head,searchVal);
+			    search(&head,searchVal,searchIndex);
 			    if(*searchIndex == 0)
 			    {
 				printf("Data not found!\n");
