@@ -217,7 +217,7 @@ enum Errorcode destroy(struct Node** head)
     return DESTROY_SUCCESS;
 }
 
-void main()
+int main()
 {
     uint32_t *searchIndex;
     uint32_t temp_index;

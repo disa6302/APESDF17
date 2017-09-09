@@ -171,7 +171,7 @@ enum Status destroy(struct circularBuffer** cb)
     return DESTROY_SUCCESS;
 }
 
-void main()
+int main()
 {
     struct circularBuffer* buffer = NULL;
     uint32_t item,buffersize,ch;
@@ -181,6 +181,7 @@ void main()
     if(status == MALLOC_FAIL) 
     {
 	printf("Buffer structure could not be allocated\n");
+	return;
     }
     printf("Enter your choice(0-5)\n0.Add\n1.Remove\n2.Dump\n3.Get size of list\n4.Delete buffer\n5.Exit\n");
     scanf("%u",&ch);
