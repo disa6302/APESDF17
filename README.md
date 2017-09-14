@@ -1,7 +1,7 @@
 # APESDF17
 Advanced Practical Embedded Software Design
 
-Folder Structure:
+Folder Structure:In HW1
 
 bin         : Contains the kernel build script- Run build_kernel command to build the necessary Kernel Version
 
