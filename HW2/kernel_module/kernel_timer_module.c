@@ -2,7 +2,12 @@
 #include <linux/kernel.h> /* Needed for KERN_INFO */
 #include <linux/init.h> /* Needed for the macros */
 #include <linux/timer.h>
- 
+
+
+MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("KERNEL_TIMER");
+MODULE_AUTHOR("DIVYA");
+
 int interval = 500;
 struct timer_list mytimer;
 static int count = 0;

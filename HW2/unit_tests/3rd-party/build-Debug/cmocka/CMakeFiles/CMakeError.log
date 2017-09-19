@@ -1,0 +1,325 @@
+Performing C SOURCE FILE Test WITH_STACK_PROTECTOR failed with the following output:
+Change Dir: /home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_02fb3/fast"
+make[2]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_02fb3.dir/build.make CMakeFiles/cmTC_02fb3.dir/build
+make[3]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_02fb3.dir/src.c.o
+/usr/bin/cc    -std=c99 -Wall -Werror -g -O0 -I 3rd-party/build-Debug/include  -std=gnu99 -pedantic -pedantic-errors -Wall -Wextra -Wshadow -Wmissing-prototypes -Wdeclaration-after-statement -Wunused -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wformat-security -Wmissing-format-attribute -Wundef -fPIC -DWITH_STACK_PROTECTOR   -fstack-protector -o CMakeFiles/cmTC_02fb3.dir/src.c.o   -c /home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp/src.c
+/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp/src.c: In function ‘main’:
+/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp/src.c:1:27: error: unused parameter ‘argv’ [-Werror=unused-parameter]
+ int main(int argc, char **argv) { char buffer[256]; return buffer[argc]=0;}
+                           ^
+cc1: all warnings being treated as errors
+CMakeFiles/cmTC_02fb3.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_02fb3.dir/src.c.o' failed
+make[3]: *** [CMakeFiles/cmTC_02fb3.dir/src.c.o] Error 1
+make[3]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_02fb3/fast' failed
+make[2]: *** [cmTC_02fb3/fast] Error 2
+make[2]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main(int argc, char **argv) { char buffer[256]; return buffer[argc]=0;}
+Determining if the include file io.h exists failed with the following output:
+Change Dir: /home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_f9b35/fast"
+make[2]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_f9b35.dir/build.make CMakeFiles/cmTC_f9b35.dir/build
+make[3]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f9b35.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -std=c99 -Wall -Werror -g -O0 -I 3rd-party/build-Debug/include  -std=gnu99 -pedantic -pedantic-errors -Wall -Wextra -Wshadow -Wmissing-prototypes -Wdeclaration-after-statement -Wunused -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wformat-security -Wmissing-format-attribute -Wundef -fPIC -D_GNU_SOURCE -D_LARGEFILE64_SOURCE    -o CMakeFiles/cmTC_f9b35.dir/CheckIncludeFile.c.o   -c /home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp/CheckIncludeFile.c:1:16: fatal error: io.h: No such file or directory
+compilation terminated.
+CMakeFiles/cmTC_f9b35.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_f9b35.dir/CheckIncludeFile.c.o' failed
+make[3]: *** [CMakeFiles/cmTC_f9b35.dir/CheckIncludeFile.c.o] Error 1
+make[3]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_f9b35/fast' failed
+make[2]: *** [cmTC_f9b35/fast] Error 2
+make[2]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+
+
+Determining if the function calloc exists failed with the following output:
+Change Dir: /home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_5cd41/fast"
+make[2]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_5cd41.dir/build.make CMakeFiles/cmTC_5cd41.dir/build
+make[3]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_5cd41.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -std=c99 -Wall -Werror -g -O0 -I 3rd-party/build-Debug/include  -std=gnu99 -pedantic -pedantic-errors -Wall -Wextra -Wshadow -Wmissing-prototypes -Wdeclaration-after-statement -Wunused -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wformat-security -Wmissing-format-attribute -Wundef -fPIC -D_GNU_SOURCE -D_LARGEFILE64_SOURCE -DCHECK_FUNCTION_EXISTS=calloc   -o CMakeFiles/cmTC_5cd41.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: error: conflicting types for built-in function ‘calloc’ [-Werror]
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+cc1: all warnings being treated as errors
+CMakeFiles/cmTC_5cd41.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_5cd41.dir/CheckFunctionExists.c.o' failed
+make[3]: *** [CMakeFiles/cmTC_5cd41.dir/CheckFunctionExists.c.o] Error 1
+make[3]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_5cd41/fast' failed
+make[2]: *** [cmTC_5cd41/fast] Error 2
+make[2]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+
+
+Determining if the function exit exists failed with the following output:
+Change Dir: /home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_9fde8/fast"
+make[2]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_9fde8.dir/build.make CMakeFiles/cmTC_9fde8.dir/build
+make[3]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_9fde8.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -std=c99 -Wall -Werror -g -O0 -I 3rd-party/build-Debug/include  -std=gnu99 -pedantic -pedantic-errors -Wall -Wextra -Wshadow -Wmissing-prototypes -Wdeclaration-after-statement -Wunused -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wformat-security -Wmissing-format-attribute -Wundef -fPIC -D_GNU_SOURCE -D_LARGEFILE64_SOURCE -DCHECK_FUNCTION_EXISTS=exit   -o CMakeFiles/cmTC_9fde8.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: error: conflicting types for built-in function ‘exit’ [-Werror]
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+cc1: all warnings being treated as errors
+CMakeFiles/cmTC_9fde8.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_9fde8.dir/CheckFunctionExists.c.o' failed
+make[3]: *** [CMakeFiles/cmTC_9fde8.dir/CheckFunctionExists.c.o] Error 1
+make[3]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_9fde8/fast' failed
+make[2]: *** [cmTC_9fde8/fast] Error 2
+make[2]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+
+
+Determining if the function fprintf exists failed with the following output:
+Change Dir: /home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ede49/fast"
+make[2]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_ede49.dir/build.make CMakeFiles/cmTC_ede49.dir/build
+make[3]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ede49.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -std=c99 -Wall -Werror -g -O0 -I 3rd-party/build-Debug/include  -std=gnu99 -pedantic -pedantic-errors -Wall -Wextra -Wshadow -Wmissing-prototypes -Wdeclaration-after-statement -Wunused -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wformat-security -Wmissing-format-attribute -Wundef -fPIC -D_GNU_SOURCE -D_LARGEFILE64_SOURCE -DCHECK_FUNCTION_EXISTS=fprintf   -o CMakeFiles/cmTC_ede49.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: error: conflicting types for built-in function ‘fprintf’ [-Werror]
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+cc1: all warnings being treated as errors
+CMakeFiles/cmTC_ede49.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_ede49.dir/CheckFunctionExists.c.o' failed
+make[3]: *** [CMakeFiles/cmTC_ede49.dir/CheckFunctionExists.c.o] Error 1
+make[3]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_ede49/fast' failed
+make[2]: *** [cmTC_ede49/fast] Error 2
+make[2]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+
+
+Determining if the function free exists failed with the following output:
+Change Dir: /home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_92927/fast"
+make[2]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_92927.dir/build.make CMakeFiles/cmTC_92927.dir/build
+make[3]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_92927.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -std=c99 -Wall -Werror -g -O0 -I 3rd-party/build-Debug/include  -std=gnu99 -pedantic -pedantic-errors -Wall -Wextra -Wshadow -Wmissing-prototypes -Wdeclaration-after-statement -Wunused -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wformat-security -Wmissing-format-attribute -Wundef -fPIC -D_GNU_SOURCE -D_LARGEFILE64_SOURCE -DCHECK_FUNCTION_EXISTS=free   -o CMakeFiles/cmTC_92927.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: error: conflicting types for built-in function ‘free’ [-Werror]
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+cc1: all warnings being treated as errors
+CMakeFiles/cmTC_92927.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_92927.dir/CheckFunctionExists.c.o' failed
+make[3]: *** [CMakeFiles/cmTC_92927.dir/CheckFunctionExists.c.o] Error 1
+make[3]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_92927/fast' failed
+make[2]: *** [cmTC_92927/fast] Error 2
+make[2]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+
+
+Determining if the function malloc exists failed with the following output:
+Change Dir: /home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_33394/fast"
+make[2]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_33394.dir/build.make CMakeFiles/cmTC_33394.dir/build
+make[3]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_33394.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -std=c99 -Wall -Werror -g -O0 -I 3rd-party/build-Debug/include  -std=gnu99 -pedantic -pedantic-errors -Wall -Wextra -Wshadow -Wmissing-prototypes -Wdeclaration-after-statement -Wunused -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wformat-security -Wmissing-format-attribute -Wundef -fPIC -D_GNU_SOURCE -D_LARGEFILE64_SOURCE -DCHECK_FUNCTION_EXISTS=malloc   -o CMakeFiles/cmTC_33394.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: error: conflicting types for built-in function ‘malloc’ [-Werror]
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+cc1: all warnings being treated as errors
+CMakeFiles/cmTC_33394.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_33394.dir/CheckFunctionExists.c.o' failed
+make[3]: *** [CMakeFiles/cmTC_33394.dir/CheckFunctionExists.c.o] Error 1
+make[3]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_33394/fast' failed
+make[2]: *** [cmTC_33394/fast] Error 2
+make[2]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+
+
+Determining if the function memcpy exists failed with the following output:
+Change Dir: /home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_51a68/fast"
+make[2]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_51a68.dir/build.make CMakeFiles/cmTC_51a68.dir/build
+make[3]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_51a68.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -std=c99 -Wall -Werror -g -O0 -I 3rd-party/build-Debug/include  -std=gnu99 -pedantic -pedantic-errors -Wall -Wextra -Wshadow -Wmissing-prototypes -Wdeclaration-after-statement -Wunused -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wformat-security -Wmissing-format-attribute -Wundef -fPIC -D_GNU_SOURCE -D_LARGEFILE64_SOURCE -DCHECK_FUNCTION_EXISTS=memcpy   -o CMakeFiles/cmTC_51a68.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: error: conflicting types for built-in function ‘memcpy’ [-Werror]
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+cc1: all warnings being treated as errors
+CMakeFiles/cmTC_51a68.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_51a68.dir/CheckFunctionExists.c.o' failed
+make[3]: *** [CMakeFiles/cmTC_51a68.dir/CheckFunctionExists.c.o] Error 1
+make[3]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_51a68/fast' failed
+make[2]: *** [cmTC_51a68/fast] Error 2
+make[2]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+
+
+Determining if the function memset exists failed with the following output:
+Change Dir: /home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_4f16c/fast"
+make[2]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_4f16c.dir/build.make CMakeFiles/cmTC_4f16c.dir/build
+make[3]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4f16c.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -std=c99 -Wall -Werror -g -O0 -I 3rd-party/build-Debug/include  -std=gnu99 -pedantic -pedantic-errors -Wall -Wextra -Wshadow -Wmissing-prototypes -Wdeclaration-after-statement -Wunused -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wformat-security -Wmissing-format-attribute -Wundef -fPIC -D_GNU_SOURCE -D_LARGEFILE64_SOURCE -DCHECK_FUNCTION_EXISTS=memset   -o CMakeFiles/cmTC_4f16c.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: error: conflicting types for built-in function ‘memset’ [-Werror]
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+cc1: all warnings being treated as errors
+CMakeFiles/cmTC_4f16c.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_4f16c.dir/CheckFunctionExists.c.o' failed
+make[3]: *** [CMakeFiles/cmTC_4f16c.dir/CheckFunctionExists.c.o] Error 1
+make[3]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_4f16c/fast' failed
+make[2]: *** [cmTC_4f16c/fast] Error 2
+make[2]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+
+
+Determining if the function printf exists failed with the following output:
+Change Dir: /home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_f398c/fast"
+make[2]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_f398c.dir/build.make CMakeFiles/cmTC_f398c.dir/build
+make[3]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f398c.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -std=c99 -Wall -Werror -g -O0 -I 3rd-party/build-Debug/include  -std=gnu99 -pedantic -pedantic-errors -Wall -Wextra -Wshadow -Wmissing-prototypes -Wdeclaration-after-statement -Wunused -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wformat-security -Wmissing-format-attribute -Wundef -fPIC -D_GNU_SOURCE -D_LARGEFILE64_SOURCE -DCHECK_FUNCTION_EXISTS=printf   -o CMakeFiles/cmTC_f398c.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: error: conflicting types for built-in function ‘printf’ [-Werror]
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+cc1: all warnings being treated as errors
+CMakeFiles/cmTC_f398c.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_f398c.dir/CheckFunctionExists.c.o' failed
+make[3]: *** [CMakeFiles/cmTC_f398c.dir/CheckFunctionExists.c.o] Error 1
+make[3]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_f398c/fast' failed
+make[2]: *** [cmTC_f398c/fast] Error 2
+make[2]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+
+
+Determining if the function strcmp exists failed with the following output:
+Change Dir: /home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_e3c60/fast"
+make[2]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_e3c60.dir/build.make CMakeFiles/cmTC_e3c60.dir/build
+make[3]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e3c60.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -std=c99 -Wall -Werror -g -O0 -I 3rd-party/build-Debug/include  -std=gnu99 -pedantic -pedantic-errors -Wall -Wextra -Wshadow -Wmissing-prototypes -Wdeclaration-after-statement -Wunused -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wformat-security -Wmissing-format-attribute -Wundef -fPIC -D_GNU_SOURCE -D_LARGEFILE64_SOURCE -DCHECK_FUNCTION_EXISTS=strcmp   -o CMakeFiles/cmTC_e3c60.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: error: conflicting types for built-in function ‘strcmp’ [-Werror]
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+cc1: all warnings being treated as errors
+CMakeFiles/cmTC_e3c60.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_e3c60.dir/CheckFunctionExists.c.o' failed
+make[3]: *** [CMakeFiles/cmTC_e3c60.dir/CheckFunctionExists.c.o] Error 1
+make[3]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_e3c60/fast' failed
+make[2]: *** [cmTC_e3c60/fast] Error 2
+make[2]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+
+
+Determining if the function sprintf exists failed with the following output:
+Change Dir: /home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_52262/fast"
+make[2]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_52262.dir/build.make CMakeFiles/cmTC_52262.dir/build
+make[3]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_52262.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -std=c99 -Wall -Werror -g -O0 -I 3rd-party/build-Debug/include  -std=gnu99 -pedantic -pedantic-errors -Wall -Wextra -Wshadow -Wmissing-prototypes -Wdeclaration-after-statement -Wunused -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wformat-security -Wmissing-format-attribute -Wundef -fPIC -D_GNU_SOURCE -D_LARGEFILE64_SOURCE -DCHECK_FUNCTION_EXISTS=sprintf   -o CMakeFiles/cmTC_52262.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: error: conflicting types for built-in function ‘sprintf’ [-Werror]
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+cc1: all warnings being treated as errors
+CMakeFiles/cmTC_52262.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_52262.dir/CheckFunctionExists.c.o' failed
+make[3]: *** [CMakeFiles/cmTC_52262.dir/CheckFunctionExists.c.o] Error 1
+make[3]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_52262/fast' failed
+make[2]: *** [cmTC_52262/fast] Error 2
+make[2]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+
+
+Determining if the function vsnprintf exists failed with the following output:
+Change Dir: /home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_59911/fast"
+make[2]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_59911.dir/build.make CMakeFiles/cmTC_59911.dir/build
+make[3]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_59911.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -std=c99 -Wall -Werror -g -O0 -I 3rd-party/build-Debug/include  -std=gnu99 -pedantic -pedantic-errors -Wall -Wextra -Wshadow -Wmissing-prototypes -Wdeclaration-after-statement -Wunused -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wformat-security -Wmissing-format-attribute -Wundef -fPIC -D_GNU_SOURCE -D_LARGEFILE64_SOURCE -DCHECK_FUNCTION_EXISTS=vsnprintf   -o CMakeFiles/cmTC_59911.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+<command-line>:0:23: error: conflicting types for built-in function ‘vsnprintf’ [-Werror]
+/usr/share/cmake-3.5/Modules/CheckFunctionExists.c:6:6: note: in expansion of macro ‘CHECK_FUNCTION_EXISTS’
+ char CHECK_FUNCTION_EXISTS();
+      ^
+cc1: all warnings being treated as errors
+CMakeFiles/cmTC_59911.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_59911.dir/CheckFunctionExists.c.o' failed
+make[3]: *** [CMakeFiles/cmTC_59911.dir/CheckFunctionExists.c.o] Error 1
+make[3]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_59911/fast' failed
+make[2]: *** [cmTC_59911/fast] Error 2
+make[2]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+
+
+Determining if the system is big endian passed with the following output:
+Change Dir: /home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_a2e46/fast"
+make[2]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_a2e46.dir/build.make CMakeFiles/cmTC_a2e46.dir/build
+make[3]: Entering directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_a2e46.dir/TestEndianess.c.o
+/usr/bin/cc    -std=c99 -Wall -Werror -g -O0 -I 3rd-party/build-Debug/include  -std=gnu99 -pedantic -pedantic-errors -Wall -Wextra -Wshadow -Wmissing-prototypes -Wdeclaration-after-statement -Wunused -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wformat-security -Wmissing-format-attribute -Wundef -fPIC -D_GNU_SOURCE -D_LARGEFILE64_SOURCE    -o CMakeFiles/cmTC_a2e46.dir/TestEndianess.c.o   -c /home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp/TestEndianess.c
+Linking C executable cmTC_a2e46
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a2e46.dir/link.txt --verbose=1
+/usr/bin/cc  -std=c99 -Wall -Werror -g -O0 -I 3rd-party/build-Debug/include  -std=gnu99 -pedantic -pedantic-errors -Wall -Wextra -Wshadow -Wmissing-prototypes -Wdeclaration-after-statement -Wunused -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wformat-security -Wmissing-format-attribute -Wundef -fPIC -D_GNU_SOURCE -D_LARGEFILE64_SOURCE     CMakeFiles/cmTC_a2e46.dir/TestEndianess.c.o  -o cmTC_a2e46 -rdynamic 
+make[3]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+make[2]: Leaving directory '/home/divya/APESDF17/HW2/unit_tests/3rd-party/build-Debug/cmocka/CMakeFiles/CMakeTmp'
+
+TestEndianess.c:
+/* A 16 bit integer is required. */
+typedef unsigned short cmakeint16;
+
+/* On a little endian machine, these 16bit ints will give "THIS IS LITTLE ENDIAN."
+   On a big endian machine the characters will be exchanged pairwise. */
+const cmakeint16 info_little[] =  {0x4854, 0x5349, 0x4920, 0x2053, 0x494c, 0x5454, 0x454c, 0x4520, 0x444e, 0x4149, 0x2e4e, 0x0000};
+
+/* on a big endian machine, these 16bit ints will give "THIS IS BIG ENDIAN."
+   On a little endian machine the characters will be exchanged pairwise. */
+const cmakeint16 info_big[] =     {0x5448, 0x4953, 0x2049, 0x5320, 0x4249, 0x4720, 0x454e, 0x4449, 0x414e, 0x2e2e, 0x0000};
+
+#ifdef __CLASSIC_C__
+int main(argc, argv) int argc; char *argv[];
+#else
+int main(int argc, char *argv[])
+#endif
+{
+  int require = 0;
+  require += info_little[argc];
+  require += info_big[argc];
+  (void)argv;
+  return require;
+}
+
+
