@@ -1,3 +1,16 @@
+/*
+* FileName        : 	doubleLL.c
+* Description     :	A double linked list that allows the user to  
+			add a node and remove a node from a specific
+			index, search a node, return size of list and 
+			destroy the list. The list is generated in a
+			backward fashion, where the head moves every 
+			time a new node is added.
+* File Author Name:	Divya Sampath Kumar
+* Tools used	  :	gcc
+* Reference	  :	https://www.youtube.com/watch?v=LvUgew66zOQ  
+*/
+
 #include <stdint.h>
 #include <math.h>
 #include <stdlib.h>
