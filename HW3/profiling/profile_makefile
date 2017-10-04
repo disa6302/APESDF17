@@ -1,0 +1,34 @@
+
+
+# FileName        : Makefile
+# Description     :	Generates executable profile in ~/APESDF17/HW3/profiling
+
+# File Author Name:	Divya Sampath Kumar
+# Reference	      :	http://ecee.colorado.edu/~ecen5623/ecen/ex/Linux/example-1/Makefile 
+
+
+
+
+CC=gcc
+
+CFLAGS= -O0 -g -w -pthread
+
+OUTPUT=profile
+
+
+CFILES= profile.c
+
+SRCS= ${CFILES}
+OBJS= $(CFILES:.c=.o) 
+
+all:	${OUTPUT}
+
+clean:
+	-rm -f *.o *.NEW *~ *.d
+	-rm -f ${OUTPUT} ${GARBAGE}
+
+profile:profile.o
+	$(CC) $(CFLAGS) -o $@ profile.o $(LIBS)
+
+.c.o:
+	$(CC) $(CFLAGS) -c $<

@@ -41,16 +41,7 @@
 ​ */
 enum Errorcode  {ADD_SUCCESS,INDEX_OUT_OF_BOUND,DELETE_SUCCESS,LL_EMPTY,DESTROY_SUCCESS,ERROR_DESTROY,REMOVE_ERROR};
 
-/*
-​ * ​ ​ @brief​ : Enum for Operation
-​ *
- *   To increment or decrement size depending on add node or delete node operation
-​ * ​ ​ Returns a code stating the status of different operations:
- *   ADD       : Increment Linked List size
- *   DELETE    : Decrement Linked List size
-​ */
-enum Operation  {ADD,DELETE} Operation;
- 
+
 
 /**
 ​ * ​ ​ @brief​ : Structure for LL Node

@@ -1,0 +1,1 @@
+cmd_/home/divya/APESDF17/HW3/kernel_threads/ll_process.ko := ld -r -m elf_x86_64 -T ./scripts/module-common.lds --build-id  -o /home/divya/APESDF17/HW3/kernel_threads/ll_process.ko /home/divya/APESDF17/HW3/kernel_threads/ll_process.o /home/divya/APESDF17/HW3/kernel_threads/ll_process.mod.o ;  true

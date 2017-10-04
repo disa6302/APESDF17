@@ -1,5 +1,4 @@
 /*
-
 * FileName        : 	doubleLL.c
 * Description     :	A double linked list that allows the user to  
 			add a node and remove a node from a specific
@@ -20,11 +19,9 @@
 
 struct Node* head=NULL;
 
-/*count	:	Keeps track of number of nodes*/
-uint32_t count = 1;
 
 /*value	:	Temporary variable to keep track of number of nodes*/
-uint32_t value;
+uint32_t value = 1;
 
 /*flag	:	Set when there is no LL available for performing operations on*/
 uint32_t flag=0;
@@ -46,6 +43,7 @@ struct Node* getNewNode(uint32_t data)
 
 enum Errorcode add_node(struct Node** head,uint32_t val,uint32_t pos)
 {
+    flag = 0;
     if(pos>=255 || pos >value)
     {
 	return INDEX_OUT_OF_BOUND;	
@@ -65,8 +63,7 @@ enum Errorcode add_node(struct Node** head,uint32_t val,uint32_t pos)
         newNode->next = *head;
 	newNode->prev = NULL;
 	*head = newNode;
-	Operation = ADD;
-	value = size();
+	value ++;
 	return ADD_SUCCESS;
     }
 
@@ -79,8 +76,8 @@ enum Errorcode add_node(struct Node** head,uint32_t val,uint32_t pos)
 	temp->next = newNode;
 	newNode->next = NULL;
 	newNode->prev = temp;
-	Operation = ADD;
-	value = size();
+
+	value ++;
 	return ADD_SUCCESS;	
     } 
     while(pos!=1)
@@ -94,18 +91,13 @@ enum Errorcode add_node(struct Node** head,uint32_t val,uint32_t pos)
     newNode->prev = temp;
     newNode->next = nextNode;
     nextNode->prev = newNode;
-    Operation = ADD;
-    value = size();
+    value ++;
     return ADD_SUCCESS;	
 }
 
 uint32_t size()
 {
-    if(Operation == ADD)
-        count=count+1;
-    if(Operation == DELETE)
-	count = count-1;
-    return count;
+    return value;
 }
 
 
@@ -141,11 +133,12 @@ enum Errorcode remove_node(struct Node** head,uint32_t pos)
 	*head = (*head)->next;
 	(*head)->prev = NULL;
 	free (temp);
-	Operation = DELETE;
-	value = size();
+	/*Operation = DELETE;
+	value = size();*/
+	value --;
 	return DELETE_SUCCESS;	
     }
-    if(pos == value-1)
+    if(pos == value)
     {
  	storeNext = *head;
 	if(temp == NULL) return LL_EMPTY;
@@ -156,8 +149,9 @@ enum Errorcode remove_node(struct Node** head,uint32_t pos)
 	storeNext = temp->prev;
 	storeNext->next = NULL;
 	free(temp);
-	Operation = DELETE;
-	value = size();
+	/*Operation = DELETE;
+	value = size();*/
+	value --;
 	return DELETE_SUCCESS;
     }
     while(pos!=0)
@@ -169,8 +163,9 @@ enum Errorcode remove_node(struct Node** head,uint32_t pos)
     storePrev = temp->prev;
     storeNext->prev = storePrev;
     storePrev->next =  storeNext;
-    Operation = DELETE;
-    value = size();
+    /*Operation = DELETE;
+	value = size();*/
+    value --;
     free(temp);
     return DELETE_SUCCESS;
 }
@@ -183,8 +178,6 @@ void search(struct Node** head,uint32_t searchVal,uint32_t* position)
     struct Node* searching = *head;
     uint32_t *pos = malloc(sizeof(pos));
     *pos = 1;
-    uint32_t *zero = malloc(sizeof(zero));
-    *zero = 0;
     while(searching!= NULL)
     {
 	if(searching->data == searchVal)
@@ -194,6 +187,7 @@ void search(struct Node** head,uint32_t searchVal,uint32_t* position)
 	searching = searching->next;
 	(*pos)++;
     }
+    free(pos);
 
 }
 
@@ -235,9 +229,11 @@ int main()
 	{
 	    case 1: printf("Enter a value:");
     		    scanf("%u",&nodeVal);
+		    if(!(head)) Errorcode = add_node(&head,nodeVal,0);
+		    else {
 		    printf("\nWhat position do you want to add this node to?");
 		    scanf("%u",&position);
-		    Errorcode = add_node(&head,nodeVal,position);
+		    Errorcode = add_node(&head,nodeVal,position);}
 		    if(Errorcode == INDEX_OUT_OF_BOUND) 
 		    {
 			printf("Index out of bound!\n");
