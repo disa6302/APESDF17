@@ -1,11 +1,12 @@
 /*
-* FileName        :ll_process.c
-* Description     :This module provides information of the children, parent and siblings
-		   for the current PID by traversing the Linked List in the backward direction
-* File Author Name:Divya Sampath Kumar
-* Tools used	  :gcc,gdb
-* Reference	  :Class Lecture Slides 
+* FileName          : ll_process.c
+* Description       : This module provides information of the children, parent and siblings
+		              for the current PID by traversing the Linked List in the backward direction
+* File Author Name  : Divya Sampath Kumar
+* Tools used        : gcc,gdb
+* Reference         : Class Lecture Slides 
 */
+
 
 #include <linux/module.h> /* Needed by all modules */
 #include <linux/kernel.h> /* Needed for KERN_INFO  */
