@@ -19,15 +19,27 @@
 
 
 size_t file_size = 0;
+
 struct statistics {
 	size_t words;
 	size_t line;
 	size_t count;
 	char filename[1024]
 };
-struct statistics statistic;
+
+int set_end = 0;
+
+//Flag for USR1
 volatile sig_atomic_t processing = 0;
+
+//Flag for USR2
 volatile sig_atomic_t report = 0;
+
+//To ensure nothing happens when USR2 is sent before USR1s
+int flag = 0;
+
+pthread_mutex_t val_mutex;
+pthread_cond_t val_cond;
 
 void handle(int signal)
 {
@@ -35,28 +47,38 @@ void handle(int signal)
     switch(signal)
     {
     	case SIGUSR1:
-    			processing = 1;
+    			if(set_end)
+    			{
+					processing = 1;
+    				flag = 1;
+    			}
     			break;
+
     	case SIGUSR2:
-    			report = 1;
+    			if(flag)
+    				report = 1;
+    			else printf("\nUSR1 not called..Call it first before you can report\n");
     			break;
     }
 }
 void* to_file(void* arg)
 {
 	struct statistics *writeFile = (struct statistics *)arg;
-	char* buff = malloc(1024*sizeof(char));
-    memset(buff,0,sizeof(buff));
+	char ch;int i;
     FILE* fp = NULL;
 
 	fp = fopen(writeFile->filename,"w+");
-    printf("Enter your text:");
-    fgets(buff, 1024*sizeof(char),stdin);
-    file_size = fwrite(buff,1,strlen(buff)*sizeof(char),fp);
-    printf("Number of characters written into file:%d\n",file_size);
+    printf("Enter your text(Enter '~' to terminate character entry):");
+    while((ch=fgetc(stdin))!='~')
+    {
+    	ch=fgetc(stdin);
+    	fputc(ch,fp);
+
+    }
+    set_end = 1;
+    printf("Send a USR1 to see statistics...\n");
     fclose(fp);
     pthread_exit(NULL);
-
 }
 
 void* from_file(void* arg)
@@ -76,7 +98,7 @@ void* from_file(void* arg)
 		char* buff = malloc(1024*sizeof(char));
 	    memset(buff,0,sizeof(buff));
 	    file_size = fread(buff,1,1024*sizeof(char),fp);
-	    printf("Number of characters read from file:%d\n",file_size);
+
 	    while(*buff!=NULL)
 	    {
 	    	if((*buff != ' ') && (*buff != '\n')) readFile->count++;
@@ -86,7 +108,8 @@ void* from_file(void* arg)
 	    	buff++;
 
 	    }
-	    printf("Words:%d\nLines:%d\nCharacters:%d\n",(readFile->words),readFile->line,(readFile->count));
+
+	    printf("\nWords:%d\nLines:%d\nCharacters:%d\n",(readFile->words),readFile->line,(readFile->count));
 	    fclose(fp);
 	    break;
 	  }	
@@ -114,6 +137,7 @@ void* reporting(void* arg)
 
 int main(int argc, char** argv)
 {
+
 	printf("Current PID:%d\n",getpid());
 	struct statistics statistic;
 	statistic.words = 0;
@@ -142,20 +166,15 @@ int main(int argc, char** argv)
   	  perror("Sigaction error for SIGUSR2\n");
     }
 
- 
-   
-
-
     pthread_create(&write_to_file,&attr,&to_file,&statistic);
     
-
     pthread_create(&read_from_file,&attr,&from_file,&statistic);
-    pthread_join(write_to_file,NULL);	
-    pthread_kill(read_from_file,SIGUSR1);
 
     pthread_create(&report,&attr,&reporting,&statistic);
+    
+    pthread_join(write_to_file,NULL);	
     pthread_join(read_from_file,NULL);
-    pthread_kill(report,SIGUSR2);
+    pthread_join(report,NULL);
 
     pthread_exit(NULL);
 

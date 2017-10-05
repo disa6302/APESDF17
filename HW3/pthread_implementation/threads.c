@@ -26,22 +26,26 @@ pthread_cond_t val_cond;
 
 void* global_count(void* arg)
 {
-
+	//pthread_self() usage
 	printf("Process ID: %d 	Thread ID:%u\n",getpid(),pthread_self());
 
 	long thread_id = (long)(arg);
 	printf("Global value at thread %d:%d \n",thread_id,global_val);
 	for(int i=0;i<THRESHOLD;i++)
 	{
+		//pthread_mutex_lock() usage
 		pthread_mutex_lock(&val_mutex);
 		global_val++;	
 		if(global_val == THRESHOLD)
 		{
 			printf("Count reached threshold with thread ID %d\n",thread_id);
 			printf("Unblocking all the threads blocked on global_val=THRESHOLD!\n");
+
+			//pthread_cond_signal() usage
 			pthread_cond_signal(&val_cond);
 
 		}
+		//pthread_mutex_unlock() usage
 		pthread_mutex_unlock(&val_mutex);
 		sleep(1);
 	}
@@ -56,10 +60,12 @@ void* global_track(void* arg)
 	long thread_id = (long)(arg);
 	while(global_val < THRESHOLD)
 	{
+		//pthread_mutex_trylock() usage
 		if(pthread_mutex_trylock(&val_mutex)==0)
 		{
 
 			printf("Waiting on global_val=THRESHOLD....\n");
+			//pthread_cond_wait() usage
 			pthread_cond_wait(&val_cond,&val_mutex);
 			printf("Conditional signal received...updating the global value..\n");
 		}
@@ -69,6 +75,8 @@ void* global_track(void* arg)
 	printf("final global value=%d\n",global_val);
 	printf("Unlocking the mutex..\n");
 	pthread_mutex_unlock(&val_mutex);
+
+	//pthread_exit() usage
 	pthread_exit(NULL);
 }
 
@@ -81,17 +89,34 @@ int main(int argc, char **argv)
 
     int s;
     pthread_attr_t attr;
+    long guard;
+    printf("Testing set attribute function by setting guard size\n");
+    printf("Enter required guard size in bytes:");
+    scanf("%long",&guard);
+    if(guard>=0)
+    {
+    	//setattr() usage
+    	s= pthread_attr_setguardsize(&attr,guard);
+    	if(s!=0)
+    		printf("Set Guard Size incorrect\n");
+    }
+
+    //pthread_getattr_default_np() usage
     s = pthread_getattr_default_np(&attr);
     if(s!=0)
     {
     	printf("Error in getattr_default()\n");
     }
 
+    //pthread_mutex_init() usage
     pthread_mutex_init(&val_mutex,NULL);
+
+    //pthread_cond_init() usage
     pthread_cond_init(&val_cond,NULL);
 
     long i;
     
+    //pthread_create() usage
   	pthread_create(&threads[0],&attr,global_track,(void*)(i+1));
     for(i=1;i<NUM_THREADS;i++)
     {
@@ -99,6 +124,7 @@ int main(int argc, char **argv)
     }
     for(i=0;i<NUM_THREADS;i++)
     {
+    	//pthread_getattr_np() usage
     	s = pthread_getattr_np(threads[i],&attr);
     	if(s!=0)
     	{
@@ -109,9 +135,14 @@ int main(int argc, char **argv)
 
     for(i=0;i<NUM_THREADS;i++)
     {
+    	//pthread_join() usage
     	pthread_join(threads[i],NULL);
     }
+
+    //pthread_mutex_destroy() usage
     pthread_mutex_destroy(&val_mutex);
+    //pthread_cond_destroy() usage
     pthread_cond_destroy(&val_cond);
+    
     pthread_exit(NULL);
 }
