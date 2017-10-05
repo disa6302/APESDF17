@@ -18,7 +18,6 @@
 #include <signal.h>
 
 
-size_t file_size = 0;
 
 struct statistics {
 	size_t words;
@@ -27,7 +26,7 @@ struct statistics {
 	char filename[1024]
 };
 
-int set_end = 0;
+
 
 //Flag for USR1
 volatile sig_atomic_t processing = 0;
@@ -38,8 +37,6 @@ volatile sig_atomic_t report = 0;
 //To ensure nothing happens when USR2 is sent before USR1s
 int flag = 0;
 
-pthread_mutex_t val_mutex;
-pthread_cond_t val_cond;
 
 void handle(int signal)
 {
@@ -47,11 +44,8 @@ void handle(int signal)
     switch(signal)
     {
     	case SIGUSR1:
-    			if(set_end)
-    			{
 					processing = 1;
     				flag = 1;
-    			}
     			break;
 
     	case SIGUSR2:
@@ -68,14 +62,17 @@ void* to_file(void* arg)
     FILE* fp = NULL;
 
 	fp = fopen(writeFile->filename,"w+");
-    printf("Enter your text(Enter '~' to terminate character entry):");
+	if(!fp)
+	{
+		printf("Error opening File in write mode\n");
+		return -1;
+	}
+    printf("Enter your text(Enter '~' in a new line to terminate character entry):");
+
     while((ch=fgetc(stdin))!='~')
     {
-    	ch=fgetc(stdin);
     	fputc(ch,fp);
-
     }
-    set_end = 1;
     printf("Send a USR1 to see statistics...\n");
     fclose(fp);
     pthread_exit(NULL);
@@ -83,6 +80,7 @@ void* to_file(void* arg)
 
 void* from_file(void* arg)
 {
+	size_t file_size;
 	struct statistics *readFile = (struct statistics *)arg;
 	while(1)
 	{
@@ -95,7 +93,18 @@ void* from_file(void* arg)
 	    readFile->line=0;
 	
 		fp = fopen(readFile->filename,"r+");
+		if(!fp)
+		{
+			printf("Error opening File in read mode\n");
+			return -1;
+		}
+
 		char* buff = malloc(1024*sizeof(char));
+		if(!buff)
+		{
+			printf("Malloc() failed\n");
+			return -1;
+		}
 	    memset(buff,0,sizeof(buff));
 	    file_size = fread(buff,1,1024*sizeof(char),fp);
 
@@ -106,8 +115,8 @@ void* from_file(void* arg)
 	    	if(*buff == '\n') readFile->line++;
 
 	    	buff++;
-
 	    }
+
 
 	    printf("\nWords:%d\nLines:%d\nCharacters:%d\n",(readFile->words),readFile->line,(readFile->count));
 	    fclose(fp);
@@ -137,7 +146,7 @@ void* reporting(void* arg)
 
 int main(int argc, char** argv)
 {
-
+	int check = 0;
 	printf("Current PID:%d\n",getpid());
 	struct statistics statistic;
 	statistic.words = 0;
@@ -152,8 +161,10 @@ int main(int argc, char** argv)
     pthread_t report;
     pthread_attr_t attr;
     pthread_attr_init(&attr);
+
     struct sigaction signal_handler;
     signal_handler.sa_handler = &handle;
+
     sigfillset(&signal_handler.sa_mask);
 
     if(sigaction(SIGUSR1,&signal_handler,NULL) <0)
@@ -166,15 +177,46 @@ int main(int argc, char** argv)
   	  perror("Sigaction error for SIGUSR2\n");
     }
 
-    pthread_create(&write_to_file,&attr,&to_file,&statistic);
+    check = pthread_create(&write_to_file,&attr,&to_file,&statistic);
+    if(check)
+    {
+    	printf("Error creating pthread\n");
+    	exit(-1);
+    }
     
-    pthread_create(&read_from_file,&attr,&from_file,&statistic);
+    check = pthread_create(&read_from_file,&attr,&from_file,&statistic);
+    if(check)
+    {
+    	printf("Error creating pthread\n");
+    	exit(-1);
+    }
 
-    pthread_create(&report,&attr,&reporting,&statistic);
+    check = pthread_create(&report,&attr,&reporting,&statistic);
+    if(check)
+    {
+    	printf("Error creating pthread\n");
+    	exit(-1);
+    }
     
-    pthread_join(write_to_file,NULL);	
-    pthread_join(read_from_file,NULL);
-    pthread_join(report,NULL);
+    check = pthread_join(write_to_file,NULL);
+    if(check)
+    {
+    	printf("Error joining pthread\n");
+    	exit(-1);
+    }	
+    check = pthread_join(read_from_file,NULL);
+    if(check)
+    {
+    	printf("Error joining pthread\n");
+    	exit(-1);
+    }
+
+    check = pthread_join(report,NULL);
+    if(check)
+    {
+    	printf("Error joining pthread\n");
+    	exit(-1);
+    }
 
     pthread_exit(NULL);
 
