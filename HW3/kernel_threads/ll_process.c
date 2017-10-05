@@ -18,25 +18,28 @@
 #include <linux/sched/signal.h>
 
 MODULE_LICENSE("GPL");
-MODULE_DESCRIPTION("Find the parents and children of current process");
+MODULE_DESCRIPTION("To find the parents and children of current process");
 MODULE_AUTHOR("DIVYA");
 
 static int __init ll_init(void)
 {
 
     struct task_struct *task;
+    //to find number of children
     struct list_head *list;
-    int number_of_threads,number_of_children;
-    number_of_children = 0;
+    int number_of_children = 0;
+
+    //traversing from current task to init_task
     for(task = current; task!=&init_task;task=task->parent)
 	{
-		  list_for_each(list,&task->children) {number_of_children++;}
-		  printk(KERN_ALERT "Process %s with ID:%d is in state %ld with %d threads and %d children\n",task->comm,task->pid,task->state,number_of_children);	
+        //Listin number of children for each traversed process
+	   list_for_each(list,&task->children) {number_of_children++;}
+	   printk(KERN_ALERT "Process %s with ID:%d is in state %ld with %d children\n",task->comm,task->pid,task->state,number_of_children);	
 	}
     return 0;
 }
  
-/*timer exit fumction to exit the timer*/
+
 static void ll_exit(void)
 {
     printk(KERN_ALERT "Exiting the module");   
