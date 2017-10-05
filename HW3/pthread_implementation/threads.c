@@ -117,10 +117,18 @@ int main(int argc, char **argv)
     long i;
     
     //pthread_create() usage
-  	pthread_create(&threads[0],&attr,global_track,(void*)(i+1));
+  	s = pthread_create(&threads[0],&attr,global_track,(void*)(i+1));
+  	if(s!=0)
+    {
+    		printf("Error in creating thread\n");
+   	}
     for(i=1;i<NUM_THREADS;i++)
     {
-    	pthread_create(&threads[i],&attr,global_count,(void*)i);
+    	s = pthread_create(&threads[i],&attr,global_count,(void*)i);
+    	if(s!=0)
+    	{
+    		printf("Error in creating thread\n");
+   		}
     }
     for(i=0;i<NUM_THREADS;i++)
     {
@@ -136,13 +144,17 @@ int main(int argc, char **argv)
     for(i=0;i<NUM_THREADS;i++)
     {
     	//pthread_join() usage
-    	pthread_join(threads[i],NULL);
+    	s= pthread_join(threads[i],NULL);
+    	if(s!=0)
+    	{
+    		printf("Error in joining\n");
+    	}
     }
 
     //pthread_mutex_destroy() usage
     pthread_mutex_destroy(&val_mutex);
     //pthread_cond_destroy() usage
     pthread_cond_destroy(&val_cond);
-    
+
     pthread_exit(NULL);
 }
