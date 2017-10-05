@@ -1,3 +1,17 @@
+/*
+* FileName        : IO_multithread.c
+* Description     :	A software to implement 3 threads, one of which opens a file and writes
+					data into it, a second thread to compute statistics of words, characters 
+					and lines and a third thread to report the statistics. Second Thread 
+					performs its action on receiving USR1 from Thread through pthread_kill.
+					Similarly, Thread 3 reports the statistics on receiving a USR2 from 
+					Thread 2. Atomic variables are use to track shared data structure between
+					the threads. 
+
+* File Author Name:	Divya Sampath Kumar
+* Tools used	  :	gcc,gdb
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
