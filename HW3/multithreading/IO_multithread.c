@@ -9,7 +9,7 @@ struct statistics {
 	size_t words;
 	size_t line;
 	size_t count;
-	char **filename
+	char filename[1024]
 };
 struct statistics statistic;
 volatile sig_atomic_t processing = 0;
@@ -30,73 +30,85 @@ void handle(int signal)
 }
 void* to_file(void* arg)
 {
-	//struct statistics statistic;
+	struct statistics *writeFile = (struct statistics *)arg;
 	char* buff = malloc(1024*sizeof(char));
     memset(buff,0,sizeof(buff));
     FILE* fp = NULL;
-	statistic.filename = (char**)arg;
-	fp = fopen(statistic.filename,"w+");
+
+	fp = fopen(writeFile->filename,"w+");
     printf("Enter your text:");
     fgets(buff, 1024*sizeof(char),stdin);
     file_size = fwrite(buff,1,strlen(buff)*sizeof(char),fp);
     printf("Number of characters written into file:%d\n",file_size);
     fclose(fp);
+    pthread_exit(NULL);
 
 }
 
 void* from_file(void* arg)
 {
+	struct statistics *readFile = (struct statistics *)arg;
 	while(1)
 	{
 	  if(processing)
       {
 	    FILE* fp = NULL;
-	//    struct statistics statistic;
-	    statistic.words=0;
-	    statistic.count=0;
-	    statistic.line=0;
-		statistic.filename = (char**)arg;
-		fp = fopen(statistic.filename,"r+");
+
+	    readFile->words=0;
+	    readFile->count=0;
+	    readFile->line=0;
+	
+		fp = fopen(readFile->filename,"r+");
 		char* buff = malloc(1024*sizeof(char));
 	    memset(buff,0,sizeof(buff));
 	    file_size = fread(buff,1,1024*sizeof(char),fp);
 	    printf("Number of characters read from file:%d\n",file_size);
 	    while(*buff!=NULL)
 	    {
-	    	if(*buff != ' ' || *buff !='\n') statistic.count ++;
-	    	if(*buff == ' ' || *buff == '\n') statistic.words++;
-	    	if(*buff == '\n') statistic.line++;
+	    	if((*buff != ' ') && (*buff != '\n')) readFile->count++;
+	    	if((*buff == ' ') || (*buff == '\n')) readFile->words++;
+	    	if(*buff == '\n') readFile->line++;
 
 	    	buff++;
 
 	    }
-	    printf("Words:%d\nLines:%d\nCharacters:%d\n",statistic.words,statistic.line,(statistic.count)-1);
+	    printf("Words:%d\nLines:%d\nCharacters:%d\n",(readFile->words),readFile->line,(readFile->count));
 	    fclose(fp);
 	    break;
 	  }	
 	}
+	pthread_exit(NULL);
 	
 }
 
 void* reporting(void* arg)
 {
-//	struct statistics statistic;
+	struct statistics *reportFile = (struct statistics *)arg;
 	while(1)
 	{
 		if(report)
 		{
-			printf("Number of words:%d\n",statistic.words);
-			printf("Number of line:%d\n",statistic.line);
-			printf("Number of characters:%d\n",(statistic.count)-1);
+			printf("Number of words:%d\n",(reportFile->words));
+			printf("Number of line:%d\n",reportFile->line);
+			printf("Number of characters:%d\n",(reportFile->count));
 			break;
 		}
 	}
+	pthread_exit(NULL);
 }
 
 
 int main(int argc, char** argv)
 {
 	printf("Current PID:%d\n",getpid());
+	struct statistics statistic;
+	statistic.words = 0;
+	statistic.count = 0;
+	statistic.line = 0;
+
+	strcpy(statistic.filename,argv[1]);
+	printf("Filename:%s\n",statistic.filename);
+
 	pthread_t write_to_file;
     pthread_t read_from_file;
     pthread_t report;
@@ -120,13 +132,14 @@ int main(int argc, char** argv)
    
 
 
-    pthread_create(&write_to_file,&attr,&to_file,(void *)argv[1]);
-    pthread_join(write_to_file,NULL);
+    pthread_create(&write_to_file,&attr,&to_file,&statistic);
+    
 
-    pthread_create(&read_from_file,&attr,&from_file,(void *)argv[1]);	
+    pthread_create(&read_from_file,&attr,&from_file,&statistic);
+    pthread_join(write_to_file,NULL);	
     pthread_kill(read_from_file,SIGUSR1);
 
-    pthread_create(&report,&attr,&reporting,NULL);
+    pthread_create(&report,&attr,&reporting,&statistic);
     pthread_join(read_from_file,NULL);
     pthread_kill(report,SIGUSR2);
 
