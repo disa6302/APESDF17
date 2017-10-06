@@ -29,7 +29,6 @@ void* global_count(void* arg)
 {
 	//pthread_self() usage
 	printf("Process ID: %d 	Thread ID:%u\n",getpid(),pthread_self());
-
 	long thread_id = (long)(arg);
 	printf("Global value at thread %d:%d \n",thread_id,global_val);
 	for(int i=0;i<THRESHOLD;i++)
