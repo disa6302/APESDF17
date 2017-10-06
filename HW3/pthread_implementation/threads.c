@@ -8,6 +8,7 @@
 
 * File Author Name:	Divya Sampath Kumar
 * Tools used	  :	gcc,gdb
+* Reference       : Manual Pages
 */
 
 #define _GNU_SOURCE
@@ -109,23 +110,31 @@ int main(int argc, char **argv)
     }
 
     //pthread_mutex_init() usage
-    pthread_mutex_init(&val_mutex,NULL);
+    s= pthread_mutex_init(&val_mutex,NULL);
+    if(s)
+   	{
+   		printf("Error in initializing mutex\n");
+   	}
 
     //pthread_cond_init() usage
-    pthread_cond_init(&val_cond,NULL);
-
+    s=pthread_cond_init(&val_cond,NULL);
+    
+    if(s)
+    {
+   		printf("Error in initializing conditional variable\n");
+   	}
     long i;
     
     //pthread_create() usage
   	s = pthread_create(&threads[0],&attr,global_track,(void*)(i+1));
-  	if(s!=0)
+  	if(s)
     {
     		printf("Error in creating thread\n");
    	}
     for(i=1;i<NUM_THREADS;i++)
     {
     	s = pthread_create(&threads[i],&attr,global_count,(void*)i);
-    	if(s!=0)
+    	if(s)
     	{
     		printf("Error in creating thread\n");
    		}
@@ -134,7 +143,7 @@ int main(int argc, char **argv)
     {
     	//pthread_getattr_np() usage
     	s = pthread_getattr_np(threads[i],&attr);
-    	if(s!=0)
+    	if(s)
     	{
     		printf("Error in getattr()\n");
     	}
@@ -145,7 +154,7 @@ int main(int argc, char **argv)
     {
     	//pthread_join() usage
     	s= pthread_join(threads[i],NULL);
-    	if(s!=0)
+    	if(s)
     	{
     		printf("Error in joining\n");
     	}
