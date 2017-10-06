@@ -10,6 +10,7 @@
 
 * File Author Name:	Divya Sampath Kumar
 * Tools used	  :	gcc,gdb
+* Reference       : http://www.linuxprogrammingblog.com/all-about-linux-signals?page=show
 */
 
 #include <stdio.h>
@@ -53,8 +54,15 @@ void handle(int signal)
     				report = 1;
     			else printf("\nUSR1 not called..Call it first before you can report\n");
     			break;
+    	case SIGINT:
+    			if(processing ==0 && report ==0) 
+    			{
+    				printf("\nGracefully exiting code\n");
+    				exit(0);
+    			}
     }
 }
+
 void* to_file(void* arg)
 {
 	struct statistics *writeFile = (struct statistics *)arg;
@@ -123,6 +131,7 @@ void* from_file(void* arg)
 	    break;
 	  }	
 	}
+	processing = 0;
 	pthread_exit(NULL);
 	
 }
@@ -140,6 +149,7 @@ void* reporting(void* arg)
 			break;
 		}
 	}
+	report = 0;
 	pthread_exit(NULL);
 }
 
@@ -175,6 +185,11 @@ int main(int argc, char** argv)
     if(sigaction(SIGUSR2,&signal_handler,NULL) <0)
     {
   	  perror("Sigaction error for SIGUSR2\n");
+    }
+
+    if(sigaction(SIGINT,&signal_handler,NULL) <0)
+    {
+  	  perror("Sigaction error for SIGINT\n");
     }
 
     check = pthread_create(&write_to_file,&attr,&to_file,&statistic);
