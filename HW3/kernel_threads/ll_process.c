@@ -4,7 +4,7 @@
 		              for the current PID by traversing the Linked List in the backward direction
 * File Author Name  : Divya Sampath Kumar
 * Tools used        : gcc,gdb
-* Reference         : Class Lecture Slides 
+* Reference         : Linux Kernel Development TextBook
 */
 
 
