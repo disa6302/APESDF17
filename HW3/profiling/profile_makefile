@@ -1,9 +1,9 @@
 
 
-# FileName        : Makefile
-# Description     :	Generates executable profile in ~/APESDF17/HW3/profiling
+# FileName            : Makefile
+# Description         :	Generates executable profile in ~/APESDF17/HW3/profiling
 
-# File Author Name:	Divya Sampath Kumar
+# File Author Name    :	Divya Sampath Kumar
 # Reference	      :	http://ecee.colorado.edu/~ecen5623/ecen/ex/Linux/example-1/Makefile 
 
 
@@ -13,10 +13,10 @@ CC=gcc
 
 CFLAGS= -O0 -g -w -pthread
 
-OUTPUT=profile
+OUTPUT=profile_pf run_test
 
 
-CFILES= profile.c
+CFILES= profile_p_fork.c run_test.c
 
 SRCS= ${CFILES}
 OBJS= $(CFILES:.c=.o) 
@@ -27,8 +27,12 @@ clean:
 	-rm -f *.o *.NEW *~ *.d
 	-rm -f ${OUTPUT} ${GARBAGE}
 
-profile:profile.o
-	$(CC) $(CFLAGS) -o $@ profile.o $(LIBS)
+profile_pf:profile_p_fork.o
+	$(CC) $(CFLAGS) -o $@ profile_p_fork.o $(LIBS)
+
+
+run_test:run_test.o
+	$(CC) $(CFLAGS) -o $@ run_test.o $(LIBS)
 
 .c.o:
 	$(CC) $(CFLAGS) -c $<

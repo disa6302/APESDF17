@@ -1,39 +1,48 @@
-/*man7.org/linux/man-pages/man2/times.2.html*/
+/*
+* FileName        : profile_kthread.c
+* Description     :	A software to time kernel thread creation using get_jiffies_64()
+
+* File Author Name:	Divya Sampath Kumar
+* Tools used	  :	gcc,gdb
+*/
 
 #include <linux/module.h> /* Needed by all modules */
 #include <linux/kernel.h> /* Needed for KERN_INFO */
 #include <linux/init.h> /* Needed for the macros */
-#include <linux/sched.h>
-#include <linux/types.h>
-#include <linux/unistd.h>
-#include <linux/list.h>
 #include <linux/kthread.h>
-#include <linux/pthread.h>
-#include <linux/sched/signal.h>
+#include <linux/timer.h>
+#include <linux/time.h> /*to use jiffies*/
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("KERNEL_PROFLE");
 MODULE_AUTHOR("DIVYA");
 
+struct timer_list mytimer;
+static struct task_struct *thread;
 
-void* do_something(void* arg)
+int do_something(void* arg)
 {
-	printf("did something\n");
+	long start_time = (long)arg;
+	long end_time, final;
+	printk(KERN_INFO "Testing kernel thread functionality\n");
+	end_time = get_jiffies_64();
+	final = end_time - start_time;
+	printk(KERN_ALERT "Time value:%lu jiffies",final);
+	return 0;
 }
 
 static int __init profile_init(void)
 {
-    pthread_t tid;
-	clock_t start_pthread, end_pthread,start_kthread,end_kthread;
-	clock_t sart_fork, end_fork;
-	double t_pthread, t_kthread, t_fork;
-	
-	start_pthread = clock();
-	pthread_create(&tid,NULL,do_something,NULL);
-	end_pthread = clock();
-	t_pthread = ((double)(end_pthread - start_pthread))/CLOCKS_PER_SEC;
-	printf("Time to create a pthread:%f secs\n",t_pthread);	
-	
+    char thread_name[15] = "ProfileKThread";
+    long s;
+	printk(KERN_INFO "Entered init module\n");
+	s = get_jiffies_64();
+	thread = kthread_create(do_something,(void *)s,thread_name);
+	if((thread))
+	{
+		wake_up_process(thread);
+	}
+	return 0;
 }
 
 static void __exit profile_exit(void)
