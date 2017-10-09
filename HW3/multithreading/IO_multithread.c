@@ -7,7 +7,6 @@
 					Similarly, Thread 3 reports the statistics on receiving a USR2 from 
 					Thread 2. Atomic variables are use to track shared data structure between
 					the threads. 
-
 * File Author Name:	Divya Sampath Kumar
 * Tools used	  :	gcc,gdb
 * Reference       : http://www.linuxprogrammingblog.com/all-about-linux-signals?page=show
@@ -35,8 +34,13 @@ volatile sig_atomic_t processing = 0;
 //Flag for USR2
 volatile sig_atomic_t report = 0;
 
+volatile sig_atomic_t sig_status = 0;
+
+volatile sig_atomic_t sig_int = 0;
+
 //To ensure nothing happens when USR2 is sent before USR1s
 int flag = 0;
+
 
 
 void handle(int signal)
@@ -45,8 +49,8 @@ void handle(int signal)
     switch(signal)
     {
     	case SIGUSR1:
-					processing = 1;
-    				flag = 1;
+				processing = 1;
+    			flag = 1;
     			break;
 
     	case SIGUSR2:
@@ -55,11 +59,15 @@ void handle(int signal)
     			else printf("\nUSR1 not called..Call it first before you can report\n");
     			break;
     	case SIGINT:
+    			sig_int = 1;
+    			break;
     			if(processing ==0 && report ==0) 
     			{
     				printf("\nGracefully exiting code\n");
     				exit(0);
     			}
+
+
     }
 }
 
@@ -75,13 +83,19 @@ void* to_file(void* arg)
 		printf("Error opening File in write mode\n");
 		return -1;
 	}
-    printf("Enter your text(Enter '~' in a new line to terminate character entry):");
+    printf("Enter your text:\n");
 
-    while((ch=fgetc(stdin))!='~')
+    while(!processing)
     {
-    	fputc(ch,fp);
+    	if((ch=fgetc(stdin)))
+    	{
+    		fputc(ch,fp);
+    	}
     }
-    printf("Send a USR1 to see statistics...\n");
+    if(processing)
+    	sig_status = 1;
+    
+
     fclose(fp);
     pthread_exit(NULL);
 }
@@ -90,16 +104,23 @@ void* from_file(void* arg)
 {
 	size_t file_size;
 	struct statistics *readFile = (struct statistics *)arg;
+	FILE* fp = NULL;
+
+	readFile->words=0;
+	readFile->count=0;
+	readFile->line=0;
+	char* buff = malloc(1024*sizeof(char));
+	if(!buff)
+	{
+		printf("Malloc() failed\n");
+		return -1;
+	}
+	memset(buff,0,sizeof(buff));
+	
 	while(1)
 	{
-	  if(processing)
+	  if(sig_status && !report)
       {
-	    FILE* fp = NULL;
-
-	    readFile->words=0;
-	    readFile->count=0;
-	    readFile->line=0;
-	
 		fp = fopen(readFile->filename,"r+");
 		if(!fp)
 		{
@@ -107,13 +128,7 @@ void* from_file(void* arg)
 			return -1;
 		}
 
-		char* buff = malloc(1024*sizeof(char));
-		if(!buff)
-		{
-			printf("Malloc() failed\n");
-			return -1;
-		}
-	    memset(buff,0,sizeof(buff));
+		
 	    file_size = fread(buff,1,1024*sizeof(char),fp);
 
 	    while(*buff!=NULL)
@@ -126,12 +141,12 @@ void* from_file(void* arg)
 	    }
 
 
-	    printf("\nWords:%d\nLines:%d\nCharacters:%d\n",(readFile->words),readFile->line,(readFile->count));
+	    printf("\nWords:%d\nLines:%d\nCharacters:%d\n",(readFile->words)-1,(readFile->line)-1,(readFile->count));
 	    fclose(fp);
 	    break;
 	  }	
 	}
-	processing = 0;
+	
 	pthread_exit(NULL);
 	
 }
@@ -234,5 +249,4 @@ int main(int argc, char** argv)
     }
 
     pthread_exit(NULL);
-
 }
