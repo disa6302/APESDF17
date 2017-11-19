@@ -5,6 +5,9 @@
 #include <linux/gpio.h>
 #include <linux/fs.h>
 #include <linux/uaccess.h>
+#include <linux/gfp.h>
+#include <linux/slab.h>
+//#include <asm/system.h>
 
 #define CLASSNAME "BBG_LED"
 #define DEVICENAME "LED"
@@ -44,23 +47,42 @@ static int led_read (struct file *fp, char __user *buffer, size_t length, loff_t
 
 static int led_write (struct file *fp, const char *buffer, size_t length, loff_t *offset)
 {
-	char kbuf[256];
-	int err;
-	err = copy_from_user(kbuf,buffer,length);
-	printk(KERN_ALERT "Entering %s module with option %s\n",__FUNCTION__,kbuf);
+	char *kbuf;
+	unsigned long status = 0;
 
-		
-	if(strcmp(kbuf,"ON"))
+	if(length<=0)
 	{
-		gpio_set_value(gpioUSRLED3,LED_ON);
-		printk(KERN_INFO "Setting LED On");
+		printk(KERN_ERR "Invalid length\n");
+		return 0;
 	}
 
-	else if(strcmp(kbuf,"OFF"))
+	kbuf = (char*)kmalloc(sizeof(char)*length,GFP_KERNEL);
+	if(!kbuf) 
+	{
+		printk(KERN_ERR "Error allocating\n");
+		return 0;
+	}
+
+	status = copy_from_user(kbuf,buffer,(sizeof(char)*length));
+        if(status !=0)
+	{
+		printk(KERN_ERR "Error copying from user space with status %ld\n",status);
+		return 0;
+	}
+	printk(KERN_ALERT "Entering %s module with option %s\n",__FUNCTION__,kbuf);
+	
+	mb();	
+	if(!strncmp(kbuf,"ON",2))
+	{
+		gpio_set_value(gpioUSRLED3,LED_ON);
+		printk(KERN_ALERT "Setting LED On");
+	}
+
+	else if(!strncmp(kbuf,"OFF",3))
 	{
 
 		gpio_set_value(gpioUSRLED3,LED_OFF);
-		printk(KERN_INFO "Setting LED Off");
+		printk(KERN_ALERT "Setting LED Off");
 	}
 	else
 		printk(KERN_INFO "Invalid request from user\n");
