@@ -12,7 +12,7 @@ int main()
 	int ret,fd;
 	char op[BUFFER_LENGTH]="ON";
 	printf("Initiating device driver testing...\n");
-	fd = open("/dev/LED", O_RDWR);
+	fd = open("/dev/LED", O_RDWR | O_SYNC);
 	if(fd < 0)
 	{
 		perror("Error opening file");
@@ -24,6 +24,8 @@ int main()
 		perror("Error performing operation\n");
 		return 0;
 	}
+
+
 	
 	close(fd);
 }

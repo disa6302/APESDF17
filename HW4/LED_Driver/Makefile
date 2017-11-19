@@ -4,7 +4,7 @@
 # Reference	  :	Class Lecture Slides 
 
 
-obj-m := chase.o
+obj-m := led_cdd.o
 #KERNELDIR ?= ../linux
 all:
 	make  -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
