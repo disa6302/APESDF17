@@ -53,21 +53,21 @@ static int led_write (struct file *fp, const char *buffer, size_t length, loff_t
 	if(length<=0)
 	{
 		printk(KERN_ERR "Invalid length\n");
-		return 0;
+		return -EINVAL;
 	}
 
 	kbuf = (char*)kmalloc(sizeof(char)*length,GFP_KERNEL);
 	if(!kbuf) 
 	{
 		printk(KERN_ERR "Error allocating\n");
-		return 0;
+		return -EINVAL;
 	}
 
 	status = copy_from_user(kbuf,buffer,(sizeof(char)*length));
         if(status !=0)
 	{
 		printk(KERN_ERR "Error copying from user space with status %ld\n",status);
-		return 0;
+		return -EINVAL;
 	}
 	printk(KERN_ALERT "Entering %s module with option %s\n",__FUNCTION__,kbuf);
 	
@@ -88,7 +88,7 @@ static int led_write (struct file *fp, const char *buffer, size_t length, loff_t
 		printk(KERN_INFO "Invalid request from user\n");
 
 	
-	return length;
+	return 0;
 }
 
 static int led_close (struct inode *node, struct file *fp)
@@ -117,7 +117,7 @@ static int __init led_init(void)
 		printk(KERN_ERR "Invalid GPIO Selection");
 		return -ENODEV;
 	}
-//	ledState = LED_ON;
+
 
 	//Allocate a GPIO
 	gpio_request(gpioUSRLED3, "sysfs");
