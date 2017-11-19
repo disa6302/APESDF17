@@ -1,1 +1,0 @@
-cmd_/home/debian/APESDF17/HW4/LED_Driver/led_cdd.ko := ld -EL -r  -T ./scripts/module-common.lds --build-id  -T ./arch/arm/kernel/module.lds -o /home/debian/APESDF17/HW4/LED_Driver/led_cdd.ko /home/debian/APESDF17/HW4/LED_Driver/led_cdd.o /home/debian/APESDF17/HW4/LED_Driver/led_cdd.mod.o

@@ -1,0 +1,1 @@
+cmd_/home/divya/APESDF17/HW4/led_cdd.ko := ld -r -m elf_x86_64 -T ./scripts/module-common.lds --build-id  -o /home/divya/APESDF17/HW4/led_cdd.ko /home/divya/APESDF17/HW4/led_cdd.o /home/divya/APESDF17/HW4/led_cdd.mod.o ;  true
