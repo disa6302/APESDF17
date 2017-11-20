@@ -1,3 +1,18 @@
+/*
+* FileName        : led_app.c
+* Description     :	Test application to test certain functionalitie
+					Command Set:
+					ON  -Turn ON LED
+					OFF -Turn OFF LED
+					FREQ:n - Set frequency to value n
+					DUTY:n - Set duty cycle to value n
+					REQALL - Request all state information ON/OFF,FREQ and DUTY
+					REQFREQ - Request Frequency
+					REQDUTY - Request Duty cycle
+
+* File Author Name:	Divya Sampath Kumar
+* Tools used	  :	gcc,gdb
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
@@ -22,21 +37,7 @@ void sig_handler(int sig)
 	exit(0);
 }
 
-/*
-* FileName        : led_app.c
-* Description     :	Test application to test certain functionalities
-					Command Set:
-					ON  -Turn ON LED
-					OFF -Turn OFF LED
-					FREQ:n - Set frequency to value n
-					DUTY:n - Set duty cycle to value n
-					REQALL - Request all state information ON/OFF,FREQ and DUTY
-					REQFREQ - Request Frequency
-					REQDUTY - Request Duty cycle
 
-* File Author Name:	Divya Sampath Kumar
-* Tools used	  :	gcc,gdb
-*/
 
 int main()
 {
@@ -57,7 +58,7 @@ int main()
 	ret = read(fd,buffer,1024);
 		
 	printf("Value read:%s\n",buffer);
-
+	printf("Length of op:%d\n",strlen(op));
 	if(ret < 0)
 	{
 		perror("Error performing write ON\n");
