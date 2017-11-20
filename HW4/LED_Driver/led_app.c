@@ -16,6 +16,7 @@ void sig_handler(int sig)
 		printf("Invalid signal received\n");
 		exit(0);
 	}
+	
 	printf("Received SIGINT closing fd\n");
 	close(fd);
 	exit(0);
@@ -26,7 +27,7 @@ int main()
 	int ret;
 	signal(SIGINT,sig_handler);
 	//int count = 250000;
-	char op[BUFFER_LENGTH]="ON";
+	char op[BUFFER_LENGTH]="FREQ:5";
 	printf("Initiating device driver testing...\n");
 	fd = open("/dev/LED", O_RDWR | O_SYNC);
 	if(fd < 0)
@@ -45,12 +46,13 @@ int main()
 			return 0;
 		}
 		usleep(500000);
-		ret = write(fd,"OFF",3);
+		/*ret = write(fd,"ON",2);
 		if(ret < 0)
 		{
 			perror("error performin write OFF\n");
 		}
 		usleep(500000);
+		*/
 
 	//	if(!count)
 	//		break;

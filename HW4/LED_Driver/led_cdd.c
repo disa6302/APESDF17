@@ -7,12 +7,15 @@
 #include <linux/uaccess.h>
 #include <linux/gfp.h>
 #include <linux/slab.h>
-//#include <asm/system.h>
+#include <linux/delay.h>
+#include <linux/string.h>
+#include <linux/timer.h>
 
 #define CLASSNAME "BBG_LED"
 #define DEVICENAME "LED"
 #define LED_ON 1
 #define LED_OFF 0
+#define FREQ_VAL ':'
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("LED character device drivers");
@@ -24,7 +27,12 @@ static int majornumber = 0;
 
 static struct class* ledDriverClass = NULL;
 static struct device* ledDriverDevice = NULL;
+static struct timer_list timer_on;
+static struct timer_list timer_off;
 
+static bool ledstate;
+static int f_int;
+static int count;
 
 static int led_open (struct inode *node, struct file *fp)
 {
@@ -34,7 +42,7 @@ static int led_open (struct inode *node, struct file *fp)
 	return 0;
 }
 
-static int led_read (struct file *fp, char __user *buffer, size_t length, loff_t *offset)
+ssize_t led_read (struct file *fp, char __user *buffer, size_t length, loff_t *offset)
 {
 	
 	printk(KERN_ALERT "Entering %s module",__FUNCTION__);
@@ -45,11 +53,43 @@ static int led_read (struct file *fp, char __user *buffer, size_t length, loff_t
 	return 0;
 }
 
-static int led_write (struct file *fp, const char *buffer, size_t length, loff_t *offset)
-{
-	char *kbuf;
-	unsigned long status = 0;
 
+void blink(unsigned long data)
+{
+	int ret;
+        printk(KERN_ALERT "Entered module\nth ledstate:%d",ledstate);
+        ledstate=~ledstate;	
+	printk(KERN_ALERT "New ledstate:%d",ledstate);
+	gpio_set_value(gpioUSRLED3,ledstate);
+	ret = mod_timer(&timer_on,jiffies+msecs_to_jiffies(f_int*1000));
+	//gpio_set_value(gpioUSRLED3,ledstate);
+}
+
+void set_frequency_led(char *freq)
+{
+	sscanf(freq,"%d",&f_int);
+	ledstate = LED_ON;
+	gpio_set_value(gpioUSRLED3,ledstate);
+	mod_timer(&timer_on,jiffies+msecs_to_jiffies(f_int*1000));
+        //gpio_set_value(gpioUSRLED3,ledstate);
+
+	
+	
+
+	//printk(KERN_ALERT "Timer value:%d\n",f_int);
+	//mdelay(f_int*1000);
+	//gpio_set_value(gpioUSRLED3,LED_OFF);
+	//mdelay(f_int*1000);
+
+	
+}
+
+ssize_t led_write (struct file *fp, const char *buffer, size_t length, loff_t *offset)
+{
+
+	char *kbuf,*strfreq,*strnum,*strdummy;
+	unsigned long status = 0;
+	
 	if(length<=0)
 	{
 		printk(KERN_ERR "Invalid length\n");
@@ -57,21 +97,28 @@ static int led_write (struct file *fp, const char *buffer, size_t length, loff_t
 	}
 
 	kbuf = (char*)kmalloc(sizeof(char)*length,GFP_KERNEL);
-	if(!kbuf) 
+	strfreq = (char*)kmalloc(sizeof(char)*length,GFP_KERNEL);
+	strnum = (char*)kmalloc(sizeof(char)*length,GFP_KERNEL);
+	strdummy = (char*)kmalloc(sizeof(char)*length,GFP_KERNEL);
+	if(!kbuf || !strfreq || !strnum || !strdummy) 
 	{
 		printk(KERN_ERR "Error allocating\n");
 		return -EINVAL;
 	}
 
 	status = copy_from_user(kbuf,buffer,(sizeof(char)*length));
-        if(status !=0)
+	strncpy(strdummy,kbuf,strlen(kbuf));
+        strfreq = strsep(&strdummy,":");
+	strnum = strsep(&strdummy,":");
+	printk(KERN_ALERT "%s %s",strfreq,strnum);
+	if(status !=0)
 	{
 		printk(KERN_ERR "Error copying from user space with status %ld\n",status);
 		return -EINVAL;
 	}
+
 	printk(KERN_ALERT "Entering %s module with option %s\n",__FUNCTION__,kbuf);
 	
-	mb();	
 	if(!strncmp(kbuf,"ON",2))
 	{
 		gpio_set_value(gpioUSRLED3,LED_ON);
@@ -83,6 +130,11 @@ static int led_write (struct file *fp, const char *buffer, size_t length, loff_t
 
 		gpio_set_value(gpioUSRLED3,LED_OFF);
 		printk(KERN_ALERT "Setting LED Off");
+	}
+	else if(!strncmp(strfreq,"FREQ",6))
+	{
+		printk(KERN_ALERT "Setting frequency for led\n");
+		set_frequency_led(strnum);
 	}
 	else
 		printk(KERN_INFO "Invalid request from user\n");
@@ -110,6 +162,7 @@ static int __init led_init(void)
 {
 	
 	int status=1;
+	setup_timer(&timer_on,blink,0);
 	printk(KERN_ALERT "Initializing %s module",__FUNCTION__);
 	//To register LED as a character device
 	if(!gpio_is_valid(gpioUSRLED3))
