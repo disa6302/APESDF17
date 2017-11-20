@@ -22,6 +22,22 @@ void sig_handler(int sig)
 	exit(0);
 }
 
+/*
+* FileName        : led_app.c
+* Description     :	Test application to test certain functionalities
+					Command Set:
+					ON  -Turn ON LED
+					OFF -Turn OFF LED
+					FREQ:n - Set frequency to value n
+					DUTY:n - Set duty cycle to value n
+					REQALL - Request all state information ON/OFF,FREQ and DUTY
+					REQFREQ - Request Frequency
+					REQDUTY - Request Duty cycle
+
+* File Author Name:	Divya Sampath Kumar
+* Tools used	  :	gcc,gdb
+*/
+
 int main()
 {
 	int ret;
@@ -35,34 +51,18 @@ int main()
 		perror("Error opening file");
 		return 0;
 	}
-//	while(1)
-//	{
-	//	count--;
-		//ret = write(fd,op,strlen(op));
-		ret = write(fd,"DUTY:30",7);
-		ret = write(fd,"REQFREQ",7);
-		ret = read(fd,buffer,1024);
-		
-		printf("Value read:%s\n",buffer);
-		printf("Length of op:%d\n",strlen(op));
-		if(ret < 0)
-		{
-			perror("Error performing write ON\n");
-			return 0;
-		}
-//		usleep(500000);
-		/*ret = write(fd,"ON",2);
-		if(ret < 0)
-		{
-			perror("error performin write OFF\n");
-		}
-//		usleep(500000);
-		*/
 
-	//	if(!count)
-	//		break;
-//	}
-//	close(fd);
+	ret = write(fd,"DUTY:30",7);
+	ret = write(fd,"REQFREQ",7);
+	ret = read(fd,buffer,1024);
+		
+	printf("Value read:%s\n",buffer);
+
+	if(ret < 0)
+	{
+		perror("Error performing write ON\n");
+		return 0;
+	}
 	return 0;
 	
 }
