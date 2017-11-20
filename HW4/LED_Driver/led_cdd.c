@@ -25,9 +25,11 @@ static int gpioUSRLED3 = 56;
 //static int ledState = LED_OFF;
 static int majornumber = 0;
 static int duty=50;
+static int duty_val = 0;
 static int req_onoff = 0;
 static int req_freq = 0;
 static int req_all = 0;
+static int freq_set = 0;
 
 static struct class* ledDriverClass = NULL;
 static struct device* ledDriverDevice = NULL;
@@ -41,7 +43,6 @@ static int led_open (struct inode *node, struct file *fp)
 {
 	printk(KERN_ALERT "Entering %s module",__FUNCTION__);
 
-	/*Implement file open-user gives file path and passes file descriptor-this routine must deal with error handling*/
 	return 0;
 }
 
@@ -88,28 +89,30 @@ ssize_t led_read (struct file *fp, char __user *buffer, size_t length, loff_t *o
 void blink(unsigned long data)
 {
 	int ret;
-        printk(KERN_ALERT "Entered module\nth ledstate:%d",ledstate);
-        ledstate=!ledstate;	
+    printk(KERN_ALERT "Entered module with the ledstate:%d",ledstate);
+    ledstate=!ledstate;	
 	printk(KERN_ALERT "New ledstate:%d",ledstate);
 	gpio_set_value(gpioUSRLED3,ledstate);
-	ret = mod_timer(&timer_on,jiffies+msecs_to_jiffies((int)(f_int-(duty/(f_int*100)))*1000));
+	ret = mod_timer(&timer_on,jiffies+msecs_to_jiffies((int)(f_int-(duty_val/(f_int*100)))*1000));
 }
 
-void set_frequency_led(char *freq)
+void set_frequency_led(char *freq,int duty)
 {
+	printk(KERN_ALERT "Freqeuncy set to:%s",freq);
 	sscanf(freq,"%d",&f_int);
-	printk(KERN_ALERT "Value:%d\n",f_int);
+	duty_val = duty;
+	printk(KERN_ALERT "Value:%d %d\n",f_int,duty_val);
 	ledstate = LED_ON;
 
 	gpio_set_value(gpioUSRLED3,ledstate);
-	mod_timer(&timer_on,jiffies+msecs_to_jiffies((int)(duty/(100*f_int))*1000));
+	mod_timer(&timer_on,jiffies+msecs_to_jiffies((int)(duty_val/(100*f_int))*1000));
       
 }
 
 ssize_t led_write (struct file *fp, const char *buffer, size_t length, loff_t *offset)
 {
 
-	char *kbuf,*strfreq,*strnum,*strdummy;
+	char *kbuf,*strfreq,*strnumf,*strfd,*strdd,*strduty,*strnumd;
 	unsigned long status = 0;
 	
 	if(length<=0)
@@ -120,19 +123,26 @@ ssize_t led_write (struct file *fp, const char *buffer, size_t length, loff_t *o
 
 	kbuf = (char*)kmalloc(sizeof(char)*length,GFP_KERNEL);
 	strfreq = (char*)kmalloc(sizeof(char)*length,GFP_KERNEL);
-	strnum = (char*)kmalloc(sizeof(char)*length,GFP_KERNEL);
-	strdummy = (char*)kmalloc(sizeof(char)*length,GFP_KERNEL);
-	if(!kbuf || !strfreq || !strnum || !strdummy) 
+	strnumf = (char*)kmalloc(sizeof(char)*length,GFP_KERNEL);
+	strduty = (char*)kmalloc(sizeof(char)*length,GFP_KERNEL);
+	strnumd = (char*)kmalloc(sizeof(char)*length,GFP_KERNEL);
+	strfd = (char*)kmalloc(sizeof(char)*length,GFP_KERNEL);
+	strdd = (char*)kmalloc(sizeof(char)*length,GFP_KERNEL);
+	if(!kbuf || !strfreq || !strfd || !strdd || !strduty || !strnumd || !strnumf) 
 	{
 		printk(KERN_ERR "Error allocating\n");
 		return -EINVAL;
 	}
 
 	status = copy_from_user(kbuf,buffer,(sizeof(char)*length));
-	strncpy(strdummy,kbuf,strlen(kbuf));
-        strfreq = strsep(&strdummy,":");
-	strnum = strsep(&strdummy,":");
-	printk(KERN_ALERT "%s %s",strfreq,strnum);
+	strncpy(strfd,kbuf,strlen(kbuf));
+    strfreq = strsep(&strfd,":");
+	strnumf = strsep(&strfd,":");
+
+	strncpy(strdd,kbuf,strlen(kbuf));
+    strduty = strsep(&strdd,":");
+	strnumd = strsep(&strdd,":");
+
 	if(status !=0)
 	{
 		printk(KERN_ERR "Error copying from user space with status %ld\n",status);
@@ -157,9 +167,23 @@ ssize_t led_write (struct file *fp, const char *buffer, size_t length, loff_t *o
 	}
 	else if(!strncmp(strfreq,"FREQ",4))
 	{
+		freq_set = 1;
 		printk(KERN_ALERT "Setting frequency for led\n");
-		set_frequency_led(strnum);
+		set_frequency_led(strnumf,duty);
 	}
+
+	else if(!strncmp(strduty,"DUTY",4))
+	{
+		printk(KERN_ALERT "Setting duty cycle for led:%s\n",strnumd);
+		sscanf(strnumd,"%d",&duty_val);
+		if(!freq_set)
+		{
+			set_frequency_led("10",duty_val);
+			freq_set = 0;
+		}
+		else set_frequency_led(strnumf,duty_val);
+	}
+
 	else if(!strncmp(kbuf,"REQONOFF",6))
 	{
 		printk(KERN_INFO "Requested LED State\n");
