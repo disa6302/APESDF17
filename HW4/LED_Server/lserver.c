@@ -9,15 +9,29 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <fcntl.h>
+#include <signal.h>
 
 void set_ledOnOff();
 int read_ledState();
 int fd;
 
+void sig_handler(int sig)
+{
+	if(sig!=SIGINT)
+	{
+		printf("Invalid signal received\n");
+		exit(0);
+	}
+	printf("Received SIGINT closing fd\n");
+	close(fd);
+	exit(0);
+}
+
 #define HOST_ADDR "10.0.0.165"
 int main()
 {
 	int sockfd,connectionfd;
+	signal(SIGINT,sig_handler);
 	char sendBuff[1024];
 	char recvBuff[1024];
 	int n;
@@ -54,7 +68,15 @@ int main()
 	printf("What I received from client..:%s\n",recvBuff);
 
 	if(!strncmp(recvBuff,"ON",2) || !strncmp(recvBuff,"OFF",3))
+	{
+		printf("Entered led off/on function\n");
 		set_ledOnOff(recvBuff);
+	}
+
+	else if(!strncmp(recvBuff,"FREQ50",6))
+		set_ledFreq(recvBuff);
+
+	close(connectionfd);
 	//n = write(sockfd,sendBuff,1024);
 	/*while(1)
 	{
@@ -81,4 +103,15 @@ void set_ledOnOff(char option[])
 
 	}
 	close(fd);
+}
+
+void set_ledFreq(char option[])
+{
+	int ret = write(fd,option,strlen(option));
+		
+	if(ret < 0)
+	{
+		perror("Error performing write frequencys\n");
+	}
+//	close(fd);
 }

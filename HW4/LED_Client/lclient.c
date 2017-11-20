@@ -13,7 +13,7 @@
 int main()
 {
 	int socketfd,n,fd;
-	char recvbuff[1024] ="ON";
+	char recvbuff[1024] ="OFF";
 
 	struct sockaddr_in lclientaddr;
 	/*fd = open("/dev/LED", O_RDWR);
@@ -53,14 +53,11 @@ int main()
 	{
 		perror("Read Error\n");
 	}*/
-
+	//printf("recvbuff:%s\n",recvbuff);
 	n = write(socketfd,recvbuff,strlen(recvbuff));
+
 	if(n<0)
 	{
 		perror("writing into buffer\n");
 	}
-
-
-	
-
 }
