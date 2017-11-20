@@ -25,6 +25,9 @@ static int gpioUSRLED3 = 56;
 //static int ledState = LED_OFF;
 static int majornumber = 0;
 static int duty=50;
+static int req_onoff = 0;
+static int req_freq = 0;
+static int req_all = 0;
 
 static struct class* ledDriverClass = NULL;
 static struct device* ledDriverDevice = NULL;
@@ -46,10 +49,38 @@ ssize_t led_read (struct file *fp, char __user *buffer, size_t length, loff_t *o
 {
 	
 	printk(KERN_ALERT "Entering %s module",__FUNCTION__);
-	if(ledstate)
-		printk(KERN_INFO "LED in on state");
-	else
-		printk(KERN_INFO "LED in off state");
+	char *kbuf;
+        int ret;
+	kbuf = (char*)kmalloc(sizeof(char)*length,GFP_KERNEL);
+	
+	if(!kbuf)
+	{
+		printk(KERN_ERR "Error allocating memory\n");
+		return -EINVAL;
+	}
+	if(req_all)
+	{
+		sprintf(kbuf,"%d%d",ledstate,f_int);
+		req_all = 0;
+	}
+	else if(req_onoff)
+	{
+		sprintf(kbuf,"%d",ledstate);
+		req_onoff = 0;
+	}
+	else if(req_freq)
+	{
+		sprintf(kbuf,"%d",f_int);
+		req_freq = 0;
+	}
+	printk(KERN_ALERT "Value state:%s\n",kbuf);
+	
+	ret = copy_to_user(buffer,kbuf,strlen(kbuf)*sizeof(char));
+	if(ret) 
+	{
+		printk(KERN_ERR "Failed copy\n");
+		return -EINVAL;
+	}
 	return 0;
 }
 
@@ -62,32 +93,17 @@ void blink(unsigned long data)
 	printk(KERN_ALERT "New ledstate:%d",ledstate);
 	gpio_set_value(gpioUSRLED3,ledstate);
 	ret = mod_timer(&timer_on,jiffies+msecs_to_jiffies((int)(f_int-(duty/(f_int*100)))*1000));
-	//gpio_set_value(gpioUSRLED3,ledstate);
 }
 
 void set_frequency_led(char *freq)
 {
 	sscanf(freq,"%d",&f_int);
 	printk(KERN_ALERT "Value:%d\n",f_int);
-	//ontime= (int)(duty/(f_int*100));
-	//printk(KERN_ALERT "Ontime:%d\n",ontime);
-	//printk(KERN_ALERT "Offtime:%d\n",offtime);
-	//offtime =(int)(f_int - ontime);
 	ledstate = LED_ON;
 
 	gpio_set_value(gpioUSRLED3,ledstate);
 	mod_timer(&timer_on,jiffies+msecs_to_jiffies((int)(duty/(100*f_int))*1000));
-        //gpio_set_value(gpioUSRLED3,ledstate);
-
-	
-	
-
-	//printk(KERN_ALERT "Timer value:%d\n",f_int);
-	//mdelay(f_int*1000);
-	//gpio_set_value(gpioUSRLED3,LED_OFF);
-	//mdelay(f_int*1000);
-
-	
+      
 }
 
 ssize_t led_write (struct file *fp, const char *buffer, size_t length, loff_t *offset)
@@ -127,14 +143,16 @@ ssize_t led_write (struct file *fp, const char *buffer, size_t length, loff_t *o
 	
 	if(!strncmp(kbuf,"ON",2))
 	{
-		gpio_set_value(gpioUSRLED3,LED_ON);
+		ledstate = LED_ON;
+		gpio_set_value(gpioUSRLED3,ledstate);
 		printk(KERN_ALERT "Setting LED On");
 	}
 
 	else if(!strncmp(kbuf,"OFF",3))
 	{
+		ledstate = LED_OFF;
 
-		gpio_set_value(gpioUSRLED3,LED_OFF);
+		gpio_set_value(gpioUSRLED3,ledstate);
 		printk(KERN_ALERT "Setting LED Off");
 	}
 	else if(!strncmp(strfreq,"FREQ",4))
@@ -142,8 +160,22 @@ ssize_t led_write (struct file *fp, const char *buffer, size_t length, loff_t *o
 		printk(KERN_ALERT "Setting frequency for led\n");
 		set_frequency_led(strnum);
 	}
-	else
-		printk(KERN_INFO "Invalid request from user\n");
+	else if(!strncmp(kbuf,"REQONOFF",6))
+	{
+		printk(KERN_INFO "Requested LED State\n");
+		req_onoff = 1;
+	}
+	else if(!strncmp(kbuf,"REQFREQ",7))
+	{
+		printk(KERN_INFO "Requested Frequency\n");
+		req_freq = 1;
+	}
+	else if(!strncmp(kbuf,"REQALL",6))
+	{
+		printk(KERN_INFO "Requested All variables\n");
+		req_all = 1;
+	}
+	else printk(KERN_INFO "Invalid option\n");
 
 	
 	return 0;

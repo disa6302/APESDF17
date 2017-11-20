@@ -27,7 +27,8 @@ int main()
 	int ret;
 	signal(SIGINT,sig_handler);
 	//int count = 250000;
-	char op[BUFFER_LENGTH]="FREQ:100";
+	char op[BUFFER_LENGTH]="FREQ:50";
+	char buffer[1024];
 	printf("Initiating device driver testing...\n");
 	fd = open("/dev/LED", O_RDWR | O_SYNC);
 	if(fd < 0)
@@ -39,6 +40,10 @@ int main()
 //	{
 	//	count--;
 		ret = write(fd,op,strlen(op));
+		ret = write(fd,"REQFREQ",7);
+		ret = read(fd,buffer,1024);
+		
+		printf("Value read:%s\n",buffer);
 		printf("Length of op:%d\n",strlen(op));
 		if(ret < 0)
 		{
