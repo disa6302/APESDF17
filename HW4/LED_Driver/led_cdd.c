@@ -24,11 +24,11 @@ MODULE_AUTHOR("DIVYA");
 static int gpioUSRLED3 = 56;
 //static int ledState = LED_OFF;
 static int majornumber = 0;
+static int duty=50;
 
 static struct class* ledDriverClass = NULL;
 static struct device* ledDriverDevice = NULL;
 static struct timer_list timer_on;
-//static struct timer_list timer_off;
 
 static bool ledstate;
 static int f_int;
@@ -61,16 +61,22 @@ void blink(unsigned long data)
         ledstate=!ledstate;	
 	printk(KERN_ALERT "New ledstate:%d",ledstate);
 	gpio_set_value(gpioUSRLED3,ledstate);
-	ret = mod_timer(&timer_on,jiffies+msecs_to_jiffies(f_int*1000));
+	ret = mod_timer(&timer_on,jiffies+msecs_to_jiffies((int)(f_int-(duty/(f_int*100)))*1000));
 	//gpio_set_value(gpioUSRLED3,ledstate);
 }
 
 void set_frequency_led(char *freq)
 {
 	sscanf(freq,"%d",&f_int);
+	printk(KERN_ALERT "Value:%d\n",f_int);
+	//ontime= (int)(duty/(f_int*100));
+	//printk(KERN_ALERT "Ontime:%d\n",ontime);
+	//printk(KERN_ALERT "Offtime:%d\n",offtime);
+	//offtime =(int)(f_int - ontime);
 	ledstate = LED_ON;
+
 	gpio_set_value(gpioUSRLED3,ledstate);
-	mod_timer(&timer_on,jiffies+msecs_to_jiffies(f_int*1000));
+	mod_timer(&timer_on,jiffies+msecs_to_jiffies((int)(duty/(100*f_int))*1000));
         //gpio_set_value(gpioUSRLED3,ledstate);
 
 	
@@ -131,7 +137,7 @@ ssize_t led_write (struct file *fp, const char *buffer, size_t length, loff_t *o
 		gpio_set_value(gpioUSRLED3,LED_OFF);
 		printk(KERN_ALERT "Setting LED Off");
 	}
-	else if(!strncmp(strfreq,"FREQ",6))
+	else if(!strncmp(strfreq,"FREQ",4))
 	{
 		printk(KERN_ALERT "Setting frequency for led\n");
 		set_frequency_led(strnum);

@@ -27,7 +27,7 @@ int main()
 	int ret;
 	signal(SIGINT,sig_handler);
 	//int count = 250000;
-	char op[BUFFER_LENGTH]="FREQ:5";
+	char op[BUFFER_LENGTH]="FREQ:100";
 	printf("Initiating device driver testing...\n");
 	fd = open("/dev/LED", O_RDWR | O_SYNC);
 	if(fd < 0)
