@@ -22,17 +22,17 @@ MODULE_DESCRIPTION("LED character device drivers");
 MODULE_AUTHOR("DIVYA");
 
 static int gpioUSRLED3 = 56;
-static int ledState = LED_OFF;
+//static int ledState = LED_OFF;
 static int majornumber = 0;
 
 static struct class* ledDriverClass = NULL;
 static struct device* ledDriverDevice = NULL;
 static struct timer_list timer_on;
-static struct timer_list timer_off;
+//static struct timer_list timer_off;
 
 static bool ledstate;
 static int f_int;
-static int count;
+
 
 static int led_open (struct inode *node, struct file *fp)
 {
@@ -46,7 +46,7 @@ ssize_t led_read (struct file *fp, char __user *buffer, size_t length, loff_t *o
 {
 	
 	printk(KERN_ALERT "Entering %s module",__FUNCTION__);
-	if(ledState)
+	if(ledstate)
 		printk(KERN_INFO "LED in on state");
 	else
 		printk(KERN_INFO "LED in off state");
@@ -58,7 +58,7 @@ void blink(unsigned long data)
 {
 	int ret;
         printk(KERN_ALERT "Entered module\nth ledstate:%d",ledstate);
-        ledstate=~ledstate;	
+        ledstate=!ledstate;	
 	printk(KERN_ALERT "New ledstate:%d",ledstate);
 	gpio_set_value(gpioUSRLED3,ledstate);
 	ret = mod_timer(&timer_on,jiffies+msecs_to_jiffies(f_int*1000));
@@ -232,7 +232,7 @@ static void __exit led_exit(void)
 	class_destroy(ledDriverClass);
 	unregister_chrdev(majornumber,
 			DEVICENAME);
-
+	del_timer(&timer_on);
 }
 
 module_init(led_init);

@@ -35,8 +35,8 @@ int main()
 		perror("Error opening file");
 		return 0;
 	}
-	while(1)
-	{
+//	while(1)
+//	{
 	//	count--;
 		ret = write(fd,op,strlen(op));
 		printf("Length of op:%d\n",strlen(op));
@@ -45,18 +45,18 @@ int main()
 			perror("Error performing write ON\n");
 			return 0;
 		}
-		usleep(500000);
+//		usleep(500000);
 		/*ret = write(fd,"ON",2);
 		if(ret < 0)
 		{
 			perror("error performin write OFF\n");
 		}
-		usleep(500000);
+//		usleep(500000);
 		*/
 
 	//	if(!count)
 	//		break;
-	}
+//	}
 //	close(fd);
 	return 0;
 	
