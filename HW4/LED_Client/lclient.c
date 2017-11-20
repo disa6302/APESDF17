@@ -1,3 +1,21 @@
+/*
+* FileName        : lclient.c
+* Description     :	Client end on PC sending commands to user application on BBG to perform
+					ON,OFF,FREQ coontrol and duty cycle control. Current LED State that such
+					as ON/OFF, FREQ and DUty cycle can also be read
+					Command Set:
+					ON  -Turn ON LED
+					OFF -Turn OFF LED
+					FREQ:n - Set frequency to value n
+					DUTY:n - Set duty cycle to value n
+					REQALL - Request all state information ON/OFF,FREQ and DUTY
+					REQFREQ - Request Frequency
+					REQDUTY - Request Duty cycle
+
+* File Author Name:	Divya Sampath Kumar
+* Tools used	  :	gcc,gdb
+*/
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -13,15 +31,9 @@
 int main()
 {
 	int socketfd,n,fd;
-	char recvbuff[1024] ="OFF";
+	char recvbuff[1024] ="REQALL";
 
 	struct sockaddr_in lclientaddr;
-	/*fd = open("/dev/LED", O_RDWR);
-	if(fd < 0)
-	{
-		perror("File failed to open\n");
-		return 0;
-	}*/
 
 	if((socketfd = socket(AF_INET,SOCK_STREAM,0))<0)
 	{
@@ -38,22 +50,6 @@ int main()
 		return 0;
 	}
 
-
-	/*while((n=read(socketfd,recvbuff,sizeof(recvbuff)-1))>0)
-	{
-		recvbuff[n] = 0;
-		if(fputs(recvbuff,stdout) == EOF)
-		{
-			perror("FPUTS ERROR!\n");
-		}
-	
-	}
-
-	if(n<0)
-	{
-		perror("Read Error\n");
-	}*/
-	//printf("recvbuff:%s\n",recvbuff);
 	n = write(socketfd,recvbuff,strlen(recvbuff));
 
 	if(n<0)

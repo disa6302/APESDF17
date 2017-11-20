@@ -1,3 +1,21 @@
+/*
+* FileName        : lserver.c
+* Description     :	Server end on BBG getting commands from user application on PC to perform
+					ON,OFF,FREQ control and duty cycle control. Current LED State that such
+					as ON/OFF, FREQ and DUty cycle can also be read
+					Command Set:
+					ON  -Turn ON LED
+					OFF -Turn OFF LED
+					FREQ:n - Set frequency to value n
+					DUTY:n - Set duty cycle to value n
+					REQALL - Request all state information ON/OFF,FREQ and DUTY
+					REQFREQ - Request Frequency
+					REQDUTY - Request Duty cycle
+
+* File Author Name:	Divya Sampath Kumar
+* Tools used	  :	gcc,gdb
+*/
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -30,10 +48,11 @@ void sig_handler(int sig)
 #define HOST_ADDR "10.0.0.165"
 int main()
 {
-	int sockfd,connectionfd;
+	int sockfd,connectionfd,ret;
 	signal(SIGINT,sig_handler);
 	char sendBuff[1024];
 	char recvBuff[1024];
+	char buffer[1024];
 	int n;
 	long counter = 0;
 	struct sockaddr_in lclientaddr,lserveraddr;
@@ -67,51 +86,21 @@ int main()
 
 	printf("What I received from client..:%s\n",recvBuff);
 
-	if(!strncmp(recvBuff,"ON",2) || !strncmp(recvBuff,"OFF",3))
-	{
-		printf("Entered led off/on function\n");
-		set_ledOnOff(recvBuff);
-	}
-
-	else if(!strncmp(recvBuff,"FREQ50",6))
-		set_ledFreq(recvBuff);
-
-	close(connectionfd);
-	//n = write(sockfd,sendBuff,1024);
-	/*while(1)
-	{
-		connectionfd = accept(sockfd,(struct sockaddr*)NULL,NULL);
-		counter=1;
-		sprintf(sendBuff,"%ld",counter);
-		write(connectionfd,sendBuff,strlen(sendBuff));
-
-		close(connectionfd);
-		sleep(1);
-
-	}*/
-
-}
-
-
-void set_ledOnOff(char option[])
-{
-	int ret = write(fd,option,strlen(option));
-	//printf("Length of op:%d\n",strlen(option));
+	ret = write(fd,rcvBuff,strlen(rcvBuff));
 	if(ret < 0)
 	{
 		perror("Error performing write ON\n");
 
 	}
+	if(!strncmp(recvBuff,"REQALL",6) || !strncmp(recvBuff,"REQFREQ",7) || !strncmp(recvBuff,"REQDUTY",7) || !strncmp(recvBuff,"REQONOFF",8))
+	{
+		ret = read(fd,buffer,1024);
+		printf("Value read:%s\n",buffer);
+	}
 	close(fd);
+	close(connectionfd);
+	
+
 }
 
-void set_ledFreq(char option[])
-{
-	int ret = write(fd,option,strlen(option));
-		
-	if(ret < 0)
-	{
-		perror("Error performing write frequencys\n");
-	}
-//	close(fd);
-}
+

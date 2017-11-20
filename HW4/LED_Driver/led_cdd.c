@@ -30,6 +30,7 @@ static int req_onoff = 0;
 static int req_freq = 0;
 static int req_all = 0;
 static int freq_set = 0;
+static int req_duty = 0;
 
 static struct class* ledDriverClass = NULL;
 static struct device* ledDriverDevice = NULL;
@@ -61,7 +62,7 @@ ssize_t led_read (struct file *fp, char __user *buffer, size_t length, loff_t *o
 	}
 	if(req_all)
 	{
-		sprintf(kbuf,"%d%d",ledstate,f_int);
+		sprintf(kbuf,"%d %d %d",ledstate,f_int,duty_val);
 		req_all = 0;
 	}
 	else if(req_onoff)
@@ -74,6 +75,12 @@ ssize_t led_read (struct file *fp, char __user *buffer, size_t length, loff_t *o
 		sprintf(kbuf,"%d",f_int);
 		req_freq = 0;
 	}
+	else if(req_duty)
+	{
+		sprintf(kbuf,"%d",duty_val);
+		req_duty = 0;
+	}
+
 	printk(KERN_ALERT "Value state:%s\n",kbuf);
 	
 	ret = copy_to_user(buffer,kbuf,strlen(kbuf)*sizeof(char));
@@ -198,6 +205,11 @@ ssize_t led_write (struct file *fp, const char *buffer, size_t length, loff_t *o
 	{
 		printk(KERN_INFO "Requested All variables\n");
 		req_all = 1;
+	}
+	else if(!strncmp(kbuf,"REQDUTY",7))
+	{
+		printk(KERN_INFO "Requested Duty Cycle\n");
+		req_duty = 1;
 	}
 	else printk(KERN_INFO "Invalid option\n");
 
